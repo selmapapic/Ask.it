@@ -23,9 +23,7 @@ func checkError(err error) {
 
 func createDBInstance() {
 	db, err := config.GetMySQLDb()
-
 	checkError(err)
-
 	database = db
 }
 

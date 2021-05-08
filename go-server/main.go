@@ -1,8 +1,6 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
 	"go-server/router"
 	"log"
 	"net/http"
@@ -26,16 +24,16 @@ func checkError(err error) {
 func main() {
 
 	// Initialize connection string.
-	var connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?allowNativePasswords=true", user, password, host, database)
+	//var connectionString = fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?allowNativePasswords=true", user, password, host, database)
 
 	// Initialize connection object.
-	db, err := sql.Open("mysql", connectionString)
-	checkError(err)
-	defer db.Close()
+	//db, err := sql.Open("mysql", connectionString)
+	//checkError(err)
+	//defer db.Close()
 
-	err = db.Ping()
-	checkError(err)
-	fmt.Println("Successfully created connection to database.")
+	//err = db.Ping()
+	//checkError(err)
+	//fmt.Println("Successfully created connection to database.")
 
 	r := router.Router()
 	log.Fatal(http.ListenAndServe(":8080", r))
