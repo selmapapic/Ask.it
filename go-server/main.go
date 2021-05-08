@@ -3,6 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"go-server/router"
+	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -34,8 +37,11 @@ func main() {
 	checkError(err)
 	fmt.Println("Successfully created connection to database.")
 
+	r := router.Router()
+	log.Fatal(http.ListenAndServe(":8080", r))
+
 	// Insert some data into table.
-	sqlStatement, err := db.Prepare("INSERT INTO user (name, email) VALUES (?, ?);")
+	/*sqlStatement, err := db.Prepare("INSERT INTO user (name, email) VALUES (?, ?);")
 	res, err := sqlStatement.Exec("selma", "scelosmano1@etf.unsa.ba")
 	checkError(err)
 	rowCount, err := res.RowsAffected()
@@ -50,5 +56,5 @@ func main() {
 	checkError(err)
 	rowCount, err = res.RowsAffected()
 	fmt.Printf("Inserted %d row(s) of data.\n", rowCount)*/
-	fmt.Println("Done.")
+	//fmt.Println("Done.")
 }
