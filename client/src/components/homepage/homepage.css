@@ -5,9 +5,13 @@ body {
 }
 
 .parent {
+    margin-top: 10%;
     margin-left: 10%;
     margin-right: 10%;
-    background-color: #c4c4c0e7;
+}
+
+.parentRow {
+    
 }
 
 .likedQs {
@@ -16,4 +20,10 @@ body {
 
 .row {
     margin: 1% 2% 1% 2%; 
+}
+
+.list-group {
+    height: 70%;
+    overflow: hidden;
+    overflow-y: scroll;
 }
