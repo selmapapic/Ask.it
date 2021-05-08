@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400&display=swap');
+
+body {
+    font-family: 'Poppins';
+}
+
+.parent {
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: #c4c4c0e7;
+}
+
+.likedQs {
+    margin-top: 4%;
+}
+
+.row {
+    margin: 1% 2% 1% 2%; 
+}
