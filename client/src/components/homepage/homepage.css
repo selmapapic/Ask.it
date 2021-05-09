@@ -5,12 +5,10 @@ body {
 }
 
 .parent {
-    margin-top: 10%;
+    margin-top: 4%;
     margin-left: 10%;
     margin-right: 10%;
 }
-
-
 
 .likedQs {
     margin-top: 4%;
@@ -20,8 +18,12 @@ body {
     margin: 1% 2% 1% 2%; 
 }
 
+#questions {
+    height: 50%;
+}
+
 .list-group {
     height: 70%;
-    overflow: hidden;
-    overflow-y: scroll;
+    padding-top: 2%;
 }
+
