@@ -33,7 +33,13 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	users := getAllUsers()
 	json.NewEncoder(w).Encode(users)
+}
 
+func GetAllQuestions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	questions := getAllQuestions()
+	json.NewEncoder(w).Encode(questions)
 }
 
 //ova radi sa bazom
@@ -57,6 +63,32 @@ func getAllUsers() []models.User {
 		user.Email = email
 		user.Password = password
 		res = append(res, user)
+	}
+	return res
+}
+
+func getAllQuestions() []models.Question {
+	query, err := database.Query("SELECT * FROM question")
+
+	checkError(err)
+
+	question := models.Question{}
+	res := []models.Question{}
+
+	for query.Next() {
+		var id, like, dislike, userId int
+		var title, text, date string
+		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		checkError(err)
+
+		question.Id = id
+		question.Title = title
+		question.Text = text
+		question.Date = date
+		question.Like = like
+		question.Dislike = dislike
+		question.UserId = userId
+		res = append(res, question)
 	}
 	return res
 }

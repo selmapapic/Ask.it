@@ -11,6 +11,6 @@ import (
 func Router() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/api/user", middleware.GetAllUsers).Methods("GET", "OPTIONS")
-
+	router.HandleFunc("/api/question", middleware.GetAllQuestions).Methods("GET", "OPTIONS")
 	return router
 }
