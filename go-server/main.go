@@ -36,7 +36,7 @@ func main() {
 	//fmt.Println("Successfully created connection to database.")
 
 	r := router.Router()
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":5000", r))
 
 	// Insert some data into table.
 	/*sqlStatement, err := db.Prepare("INSERT INTO user (name, email) VALUES (?, ?);")

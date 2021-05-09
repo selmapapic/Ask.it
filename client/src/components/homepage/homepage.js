@@ -1,29 +1,36 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './homepage.css'
+import axios from "axios";
 
 
-const homepage = () => {
+// zadat rutu kao /api
+const Homepage = (props) => {
+
+  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    const fetchData = async() => {
+      const {data} = await axios.get("/api/question");
+      setQuestions(data);
+    }
+    fetchData();
+    return () => {
+      //
+    }
+  }, [])
+
   return (
     <div className="parent">
       <div class="row">
         <div class="col-md">
           <h3>Newest questions</h3>
           <ul class="list-group">
-            <li class="list-group-item">Morbi leo risus</li>
-            <li class="list-group-item">Porta ac consectetur ac</li>
-            <li class="list-group-item">Vestibulum at eros</li>
-            <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-                <li class="list-group-item">Morbi leo risus</li>
-                <li class="list-group-item">Porta ac consectetur ac</li>
-                <li class="list-group-item">Vestibulum at eros</li>
+            {questions.map(q => 
+            <li class="list-group-item">
+              {q.Title}
+            </li>
+            )}
+            
                 
           </ul>
         </div>
@@ -52,4 +59,4 @@ const homepage = () => {
   )
 }
 
-export default homepage
+export default Homepage
