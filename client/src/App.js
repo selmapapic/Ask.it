@@ -8,6 +8,8 @@ import Login from "./components/login/login";
 import SignUp from "./components/signup/signup"
 import Homepage from "./components/homepage/homepage"
 import MyQuestions from "./components/questions/myQuestions"
+import Questions from "./components/questions/questionsPage"
+import QuestionsPage from './components/questions/questionsPage';
 
 function App() {
   const isLoginSignup = window.location.pathname;
@@ -25,6 +27,9 @@ function App() {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to={"/my-questions"}>My Questions</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to={"/questions"}>Questions page</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to={"/log-in"}>Login</Link>
@@ -45,6 +50,7 @@ function App() {
             <Route path="/sign-up" component={SignUp} />
             <Route path="/homepage" component={Homepage} />
             <Route path="/my-questions" component={MyQuestions} />
+            <Route path="/questions" component={QuestionsPage} />
           </Switch>
         </div>
       </div>
