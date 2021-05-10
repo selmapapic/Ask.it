@@ -9,6 +9,7 @@ const perPage = 3;
 const MyQuestions = () => {
 
     const [questions, setQuestions] = useState([]);
+    const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,6 +31,11 @@ const MyQuestions = () => {
                     { "Context-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question");
+                setQuestions(data);
+            }
+            fetchData();
             console.log(res);
         })
     }
@@ -57,8 +63,8 @@ const MyQuestions = () => {
 
             </div>
             <div className="align-self-center mx-auto">
-                <button className="btn btn-primary"><i className="fa fa-plus"></i> &nbsp; Add new question</button>
-                <AddQuestion onAdd={addQuestion} />
+                <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}><i className="fa fa-plus"></i> &nbsp; Add new question</button>
+                {showForm && <AddQuestion onAdd={addQuestion} />}
             </div>
         </div>
     )
