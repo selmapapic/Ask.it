@@ -1,5 +1,29 @@
 .list-group-my {
     width: 50%;
-    margin-top: 5%;
+    margin-left: 24%;
+    margin-right: auto;
+    float: left;
 }
 
+
+
+p {
+    text-align: left;
+}
+
+h3 {
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+.fa-thumbs-up {
+    color: rgb(2, 184, 2);
+}
+
+.fa-thumbs-down {
+    color: red;
+}
+
+.btn {
+    height: 10%;
+}

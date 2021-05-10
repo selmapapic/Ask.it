@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import {TinyButton as ScrollUpButton} from "react-scroll-up-button";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Login from "./components/login/login";
@@ -15,6 +16,7 @@ function App() {
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
+        <ScrollUpButton AnimationDuration={100}/>
           <Link className="navbar-brand" to={"/homepage"}>Ask.it</Link>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
