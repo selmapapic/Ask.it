@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card'
 import Accordion from 'react-bootstrap/Accordion'
 import "./questionsPage.css"
 import axios from "axios";
+import Answers from '../answers/answers';
 
 
 
@@ -23,20 +24,30 @@ const QuestionsPage = () => {
 
     return (
         <div className="okvir">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <h3 className="qs">Questions</h3>
             <Accordion className="accordion">
                 {
                     questions.map(q =>
-                        <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey={q.Id}>
-                                {q.Title}
-                                <br></br>
-                                {q.Date}
+                        <Card >
+                            <Accordion.Toggle as={Card.Header} eventKey={q.Id} >
+                                <div className="d-flex w-100 justify-content-between">
+                                    <p>{q.Title}</p>
+                                    <small>{q.Date}</small>
+                                </div>
+                                <p>Description: &nbsp; {q.Text}</p>
+                                <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                                    {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey={q.Id}>
-                                <Card.Body>Hello! I'm the body</Card.Body>
+                                <Card.Body>
+                                    <Answers />
+                                    <button className="btn btn-primary">View all</button>
+                                </Card.Body>
                             </Accordion.Collapse>
+
                         </Card>
+
                     )
                 }
             </Accordion>

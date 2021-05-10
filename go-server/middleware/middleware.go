@@ -74,6 +74,13 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 	insertQuestion(newQ)
 }
 
+func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	answers := getFewAnswers()
+	json.NewEncoder(w).Encode(answers)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -205,6 +212,32 @@ func usersWithMostAnswers() []models.User {
 		checkError(err)
 		var user = getUserForId(id)
 		res = append(res, user)
+	}
+	return res
+}
+
+func getFewAnswers() []models.Question {
+	query, err := database.Query("SELECT * FROM question q ORDER BY q.like DESC LIMIT 3")
+
+	checkError(err)
+
+	question := models.Question{}
+	res := []models.Question{}
+
+	for query.Next() {
+		var id, like, dislike, userId int
+		var title, text, date string
+		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		checkError(err)
+
+		question.Id = id
+		question.Title = title
+		question.Text = text
+		question.Date = date
+		question.Like = like
+		question.Dislike = dislike
+		question.UserId = userId
+		res = append(res, question)
 	}
 	return res
 }

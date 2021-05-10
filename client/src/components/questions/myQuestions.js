@@ -50,8 +50,8 @@ const MyQuestions = () => {
             <div className="list-group-my">
                 {
                     questions.map(q =>
-                        <a href="#!" className="list-group-item list-group-item-action flex-column align-items-start">
-                            <div key={q.Id} className="d-flex w-100 justify-content-between">
+                        <a href="#!" key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
+                            <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-2 h5">{q.Title}</h5>
                                 <small>{q.Date}</small>
                             </div>
