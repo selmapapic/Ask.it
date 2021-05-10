@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"go-server/config"
 	"go-server/models"
+	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 var database *sql.DB
@@ -40,6 +42,21 @@ func GetAllQuestions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	questions := getAllQuestions()
 	json.NewEncoder(w).Encode(questions)
+}
+
+func CreateQuestion(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+
+	//posto se dobije unstructured json {"question":{"title":"a","text":"a"}} mora se pravit mapa umjesto obicnog decode >.<
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	result = result["question"].(map[string]interface{})
+
+	var newQ models.QuestionNew
+	newQ.Title = result["title"].(string)
+	newQ.Text = result["text"].(string)
+	insertQuestion(newQ)
 }
 
 //ova radi sa bazom
@@ -93,16 +110,16 @@ func getAllQuestions() []models.Question {
 	return res
 }
 
-func insertQuestion(question models.Question) {
-	statement, err := database.Prepare("INSERT INTO question (title, text, date, like, dislike, userId) VALUES (?,?,?,?,?,?)")
+func insertQuestion(question models.QuestionNew) {
+	statement, err := database.Prepare("INSERT INTO question (`title`, `text`, `dateTime`, `like`, `dislike`, `userId`) VALUES (?,?,?,?,?,?);")
 	checkError(err)
 
-	res, err := statement.Exec(question.Title, question.Text, question.Date, question.Like, question.Dislike, question.UserId)
+	res, err := statement.Exec(question.Title, question.Text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, 5)
 	checkError(err)
 
 	id, err := res.LastInsertId()
 	checkError(err)
 
-	fmt.Println("Added row with id ", id)
+	fmt.Println("Added row with id", id)
 
 }

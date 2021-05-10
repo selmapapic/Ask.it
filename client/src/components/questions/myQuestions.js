@@ -21,11 +21,24 @@ const MyQuestions = () => {
         }
     }, [])
 
+    const addQuestion = (question) => {
+        console.log(question);
+        axios.post("/api/question",
+            { question },
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            console.log(res);
+        })
+    }
+
 
     return (
         <div className="bodyMain">
             <h3>My Questions</h3>
-            
+
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="list-group-my">
                 {
@@ -45,7 +58,7 @@ const MyQuestions = () => {
             </div>
             <div className="align-self-center mx-auto">
                 <button className="btn btn-primary"><i className="fa fa-plus"></i> &nbsp; Add new question</button>
-                <AddQuestion />
+                <AddQuestion onAdd={addQuestion} />
             </div>
         </div>
     )
