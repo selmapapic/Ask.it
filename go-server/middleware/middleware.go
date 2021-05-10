@@ -8,6 +8,7 @@ import (
 	"go-server/models"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -41,6 +42,20 @@ func GetAllQuestions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	questions := getAllQuestions()
+	json.NewEncoder(w).Encode(questions)
+}
+
+func GetUsersWithMostAnswers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	users := usersWithMostAnswers()
+	json.NewEncoder(w).Encode(users)
+}
+
+func GetMostLikedQuestions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	questions := mostLikedQuestions()
 	json.NewEncoder(w).Encode(questions)
 }
 
@@ -85,7 +100,7 @@ func getAllUsers() []models.User {
 }
 
 func getAllQuestions() []models.Question {
-	query, err := database.Query("SELECT * FROM question")
+	query, err := database.Query("SELECT * FROM question q ORDER BY q.dateTime DESC")
 
 	checkError(err)
 
@@ -122,4 +137,74 @@ func insertQuestion(question models.QuestionNew) {
 
 	fmt.Println("Added row with id", id)
 
+}
+
+func mostLikedQuestions() []models.Question {
+	query, err := database.Query("SELECT * FROM question q ORDER BY q.like DESC LIMIT 5")
+
+	checkError(err)
+
+	question := models.Question{}
+	res := []models.Question{}
+
+	for query.Next() {
+		var id, like, dislike, userId int
+		var title, text, date string
+		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		checkError(err)
+
+		question.Id = id
+		question.Title = title
+		question.Text = text
+		question.Date = date
+		question.Like = like
+		question.Dislike = dislike
+		question.UserId = userId
+		res = append(res, question)
+	}
+	return res
+}
+
+//select a.answerUserId, count(a.answerUserId) from askitdb.answer a
+//group by a.answerUserId
+//order by count(a.answerUserId) desc
+
+func getUserForId(idUser int) models.User {
+	query, err := database.Query("SELECT * FROM user WHERE id = " + strconv.Itoa(idUser))
+	checkError(err)
+
+	user := models.User{}
+
+	for query.Next() {
+		var id int
+		var name, surname, email, password string
+		err = query.Scan(&id, &name, &surname, &email, &password)
+		checkError(err)
+		user.Id = id
+		user.Name = name
+		user.Surname = surname
+		user.Email = email
+		user.Password = password
+	}
+
+	return user
+}
+
+//	query, err := database.Query("SELECT a.answerUserId, COUNT(a.answerUserId) FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
+
+func usersWithMostAnswers() []models.User {
+	query, err := database.Query("SELECT a.answerUserId FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
+
+	checkError(err)
+
+	res := []models.User{}
+
+	for query.Next() {
+		var id int
+		err = query.Scan(&id)
+		checkError(err)
+		var user = getUserForId(id)
+		res = append(res, user)
+	}
+	return res
 }

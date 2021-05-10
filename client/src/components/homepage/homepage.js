@@ -9,8 +9,8 @@ const Homepage = (props) => {
 
   const [questions, setQuestions] = useState([]);
   useEffect(() => {
-    const fetchData = async() => {
-      const {data} = await axios.get("/api/question");
+    const fetchData = async () => {
+      const { data } = await axios.get("/api/question");
       setQuestions(data);
     }
     fetchData();
@@ -19,11 +19,11 @@ const Homepage = (props) => {
     }
   }, [])
 
-  const [users, setUsers] = useState([]);
+  const [usersMostAnswers, setUsersMostAnswers] = useState([]);
   useEffect(() => {
-    const fetchData = async() => {
-      const {data} = await axios.get("/api/user");
-      setUsers(data);
+    const fetchData = async () => {
+      const { data } = await axios.get("/api/user/mostAnswers");
+      setUsersMostAnswers(data);
     }
     fetchData();
     return () => {
@@ -31,19 +31,46 @@ const Homepage = (props) => {
     }
   }, [])
 
+  const [mostLikedQs, setMostLikedQs] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get("/api/mostLiked");
+      setMostLikedQs(data);
+    }
+    fetchData();
+    return () => {
+      //
+    }
+  }, [])
+
+ /* const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data } = await axios.get("/api/user");
+      setUsers(data);
+    }
+    fetchData();
+    return () => {
+      //
+    }
+  }, [])*/
+
   return (
     <div className="parent">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
       <div className="row">
         <div className="col-md">
           <h3>Newest questions</h3>
           <ul className="list-group">
-            {questions.map(q => 
-            <li key={q.Id} className="list-group-item">
-              {q.Title}
-            </li>
+            {questions.map(q =>
+              <li key={q.Id} className="list-group-item">
+                {q.Title} <br></br>
+                {q.Date}
+              </li>
             )}
-            
-                
+
+
           </ul>
         </div>
         <div className="col-md">
@@ -51,20 +78,23 @@ const Homepage = (props) => {
             <div className="col-12">
               <h3>People with most answers</h3>
               <ul className="list-group">
-                {users.map(u => 
+                {usersMostAnswers.map(u =>
                   <li key={u.Id} className="list-group-item">
-                    {u.Name}
+                    {u.Name} &nbsp; {u.Surname}
                   </li>
-                  )}
-                
+                )}
+
               </ul>
             </div>
             <div className="col-12" className="likedQs">
               <h3>Most liked questions</h3>
               <ul className="list-group">
-                <li className="list-group-item">Morbi leo risus</li>
-                <li className="list-group-item">Porta ac consectetur ac</li>
-                <li className="list-group-item">Vestibulum at eros</li>
+                {mostLikedQs.map(u =>
+                  <li key={u.Id} className="list-group-item">
+                    {u.Title} <i className="fa fa-thumbs-up"></i>&nbsp;
+                    {u.Like}
+                  </li>
+                )}
               </ul>
             </div>
           </div>
