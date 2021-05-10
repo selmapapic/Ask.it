@@ -1,0 +1,23 @@
+form {
+    display: block;
+    background-color: white;
+    width: 20%;
+    float: right;
+    border-radius: 5px;
+    margin-top: 3%;
+    margin-right: 3%;
+    padding-bottom: 2%;
+    padding-top: 2%;
+}
+
+.form-parts {
+    display: block;
+}
+
+label {
+    align-content: unset;
+}
+
+.btn {
+    margin-top: 2%;
+}

@@ -3,9 +3,8 @@
     margin-left: 24%;
     margin-right: auto;
     float: left;
+    border-radius: 5px;
 }
-
-
 
 p {
     text-align: left;

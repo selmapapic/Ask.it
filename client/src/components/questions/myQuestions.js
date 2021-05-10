@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 //import '../../App.css';
 import './myQuestions.css';
 import axios from "axios";
-import Question from "./question"
+import AddQuestion from "./addQuestion"
 
 const perPage = 3;
 
@@ -25,6 +25,7 @@ const MyQuestions = () => {
     return (
         <div className="bodyMain">
             <h3>My Questions</h3>
+            
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="list-group-my">
                 {
@@ -44,6 +45,7 @@ const MyQuestions = () => {
             </div>
             <div className="align-self-center mx-auto">
                 <button className="btn btn-primary"><i className="fa fa-plus"></i> &nbsp; Add new question</button>
+                <AddQuestion />
             </div>
         </div>
     )
