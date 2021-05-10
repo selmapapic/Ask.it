@@ -8,7 +8,6 @@ import Login from "./components/login/login";
 import SignUp from "./components/signup/signup"
 import Homepage from "./components/homepage/homepage"
 import MyQuestions from "./components/questions/myQuestions"
-import Questions from "./components/questions/questionsPage"
 import QuestionsPage from './components/questions/questionsPage';
 
 function App() {

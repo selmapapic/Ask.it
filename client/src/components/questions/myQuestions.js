@@ -1,11 +1,9 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 //import '../../App.css';
 import './myQuestions.css';
 import axios from "axios";
 import AddQuestion from "./addQuestion"
 import Button from './button';
-
-const perPage = 3;
 
 const MyQuestions = () => {
 

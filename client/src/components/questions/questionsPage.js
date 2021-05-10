@@ -29,7 +29,7 @@ const QuestionsPage = () => {
             <Accordion className="accordion">
                 {
                     questions.map(q =>
-                        <Card >
+                        <Card key={q.Id}>
                             <Accordion.Toggle as={Card.Header} eventKey={q.Id} >
                                 <div className="d-flex w-100 justify-content-between">
                                     <p>{q.Title}</p>
