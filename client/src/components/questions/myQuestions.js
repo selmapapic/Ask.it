@@ -3,6 +3,7 @@ import React, { Component, useState, useEffect } from 'react';
 import './myQuestions.css';
 import axios from "axios";
 import AddQuestion from "./addQuestion"
+import Button from './button';
 
 const perPage = 3;
 
@@ -63,7 +64,12 @@ const MyQuestions = () => {
 
             </div>
             <div className="align-self-center mx-auto">
-                <button className="btn btn-primary" onClick={() => setShowForm(!showForm)}><i className="fa fa-plus"></i> &nbsp; Add new question</button>
+                <Button
+                    color={showForm ? 'red' : 'green'}
+                    text={showForm ? 'Close form' : 'Add new question'}
+                    icon={showForm ? 'fa fa-times' : 'fa fa-plus'}
+                    onClick={() => setShowForm(!showForm)}
+                />
                 {showForm && <AddQuestion onAdd={addQuestion} />}
             </div>
         </div>
