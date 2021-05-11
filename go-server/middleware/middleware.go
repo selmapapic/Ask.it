@@ -91,12 +91,13 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	//result = result["question"].(map[string]interface{})
 
 	password, _ := bcrypt.GenerateFromPassword([]byte(result["password"].(string)), 14)
-	var newUser models.UserNew
-	newUser.Name = result["name"].(string)
-	newUser.Surname = result["surname"].(string)
-	newUser.Email = result["email"].(string)
-	newUser.Password = password
-
+	newUser := models.UserNew{
+		Name:     result["name"].(string),
+		Surname:  result["surname"].(string),
+		Email:    result["email"].(string),
+		Password: password,
+	}
+	json.NewEncoder(w).Encode(newUser)
 	insertUser(newUser)
 }
 
