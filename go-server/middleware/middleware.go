@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 var database *sql.DB
@@ -79,6 +81,23 @@ func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	answers := getFewAnswers()
 	json.NewEncoder(w).Encode(answers)
+}
+
+func RegisterUser(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	//result = result["question"].(map[string]interface{})
+
+	password, _ := bcrypt.GenerateFromPassword([]byte(result["password"].(string)), 14)
+	var newUser models.UserNew
+	newUser.Name = result["name"].(string)
+	newUser.Surname = result["surname"].(string)
+	newUser.Email = result["email"].(string)
+	newUser.Password = password
+
+	insertUser(newUser)
 }
 
 //ova radi sa bazom
@@ -172,10 +191,6 @@ func mostLikedQuestions() []models.Question {
 	return res
 }
 
-//select a.answerUserId, count(a.answerUserId) from askitdb.answer a
-//group by a.answerUserId
-//order by count(a.answerUserId) desc
-
 func getUserForId(idUser int) models.User {
 	query, err := database.Query("SELECT * FROM user WHERE id = " + strconv.Itoa(idUser))
 	checkError(err)
@@ -196,8 +211,6 @@ func getUserForId(idUser int) models.User {
 
 	return user
 }
-
-//	query, err := database.Query("SELECT a.answerUserId, COUNT(a.answerUserId) FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
 
 func usersWithMostAnswers() []models.User {
 	query, err := database.Query("SELECT a.answerUserId FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
@@ -240,4 +253,18 @@ func getFewAnswers() []models.Question {
 		res = append(res, question)
 	}
 	return res
+}
+
+func insertUser(user models.UserNew) {
+	statement, err := database.Prepare("INSERT INTO user (`name`, `surname`, `email`, `password`) VALUES (?,?,?,?);")
+	checkError(err)
+
+	res, err := statement.Exec(user.Name, user.Surname, user.Email, user.Password)
+	checkError(err)
+
+	id, err := res.LastInsertId()
+	checkError(err)
+
+	fmt.Println("Added row with id", id)
+
 }
