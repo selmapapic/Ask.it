@@ -101,6 +101,27 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	insertUser(newUser)
 }
 
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	//result = result["question"].(map[string]interface{})
+
+	var user models.User
+	user = getUserByEmail(result["email"].(string))
+
+	if user.Id == 0 {
+		w.WriteHeader(403)
+	} else {
+		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(result["password"].(string)))
+		checkError(err)
+
+		json.NewEncoder(w).Encode(user)
+
+	}
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -194,6 +215,27 @@ func mostLikedQuestions() []models.Question {
 
 func getUserForId(idUser int) models.User {
 	query, err := database.Query("SELECT * FROM user WHERE id = " + strconv.Itoa(idUser))
+	checkError(err)
+
+	user := models.User{}
+
+	for query.Next() {
+		var id int
+		var name, surname, email, password string
+		err = query.Scan(&id, &name, &surname, &email, &password)
+		checkError(err)
+		user.Id = id
+		user.Name = name
+		user.Surname = surname
+		user.Email = email
+		user.Password = password
+	}
+
+	return user
+}
+
+func getUserByEmail(email string) models.User {
+	query, err := database.Query("SELECT * FROM user WHERE email = '" + email + "'")
 	checkError(err)
 
 	user := models.User{}
