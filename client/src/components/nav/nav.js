@@ -46,10 +46,10 @@ const Nav = (props) => {
                     <Link className="nav-link" to={"/homepage"}>Home</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to={"/my-questions"}>My Questions</Link>
+                    <Link className="nav-link" to={"/questions"}>Questions page</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to={"/questions"}>Questions page</Link>
+                    <Link className="nav-link" to={"/my-questions"}>My Questions</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" to={"/log-in"} onClick={logout}>Logout</Link>
