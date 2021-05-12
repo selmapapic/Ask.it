@@ -1,22 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import '../../App.css';
 import './login.css';
+import axios from "axios";
+import { Redirect } from 'react-router';
 
 
-const login = () => {
+const Login = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [redirect, setRedirect] = useState(false)
+
+
+    const submit = (e) => {
+        e.preventDefault()
+        axios.defaults.withCredentials = true
+        axios.post("/api/user/login",
+            { email, password },
+            { withCredentials: true },
+            {
+                headers:
+                    { "Content-Type": "application/x-www-form-urlencoded" }
+            }
+        ).then((res) => {})
+
+        setRedirect(true)
+    }
+
+    if (redirect) {
+        return <Redirect to="/my-questions" />
+    }
+
     return (
         <div className="outer">
             <div className="inner">
-                <form>
+                <form onSubmit={submit}>
                     <h3>Log In</h3>
 
                     <div className="form-group">
                         <label>Email address</label>
-                        <input type="email" className="form-control" placeholder="Enter email" required/>
+                        <input type="email" className="form-control" placeholder="Enter email" required onChange={e => setEmail(e.target.value)}/>
                     </div>
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter password" required/>
+                        <input type="password" className="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)}/>
                     </div>
 
                     <div><br></br></div>
@@ -30,4 +56,4 @@ const login = () => {
     )
 }
 
-export default login
+export default Login
