@@ -147,7 +147,11 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 		return []byte(SecretKey), nil
 	})
 
-	checkError(err)
+	if err != nil {
+		//popravit myb ovaj error neki
+		json.NewEncoder(w).Encode("unauth")
+		return
+	}
 
 	claims := token.Claims.(*jwt.StandardClaims)
 	var user models.User
@@ -156,6 +160,18 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	user = getUserForId(issuer)
 
 	json.NewEncoder(w).Encode(user)
+}
+
+func LogoutUser(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour), //expired one hour ago i tako se remove-a
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, &cookie)
+	json.NewEncoder(w).Encode("user")
 
 }
 
