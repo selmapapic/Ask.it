@@ -51,7 +51,7 @@ const Signup = () => {
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" pattern="(?=.*\d)(?=.*[a-z]).{5,}" placeholder="Enter password" onChange={e => setPassword(e.target.value)} required/>
+                        <input type="password" className="form-control" pattern="(?=.*[a-z]).{5,}" placeholder="Enter password" onChange={e => setPassword(e.target.value)} required/>
                     </div>
                     <div><br></br></div>
                     <button type="submit" className="btn btn-secondary btn-block">Register</button>
