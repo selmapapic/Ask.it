@@ -17,6 +17,12 @@ func checkError(err error) {
 func main() {
 
 	r := router.Router()
+	/**c := cors.New(cors.Options{
+		AllowCredentials: true,
+	})
+	//za cors ako bude trebalo
+	handler := c.Handler(r)
+	//http.ListenAndServe(":8080", handler)*/
 	log.Fatal(http.ListenAndServe(":5000", r))
 
 }

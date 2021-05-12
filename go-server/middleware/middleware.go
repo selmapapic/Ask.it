@@ -11,8 +11,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
+
+const SecretKey = "secret"
 
 var database *sql.DB
 
@@ -117,9 +120,43 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(result["password"].(string)))
 		checkError(err)
 
-		json.NewEncoder(w).Encode(user)
+		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+			Issuer:    strconv.Itoa(user.Id),
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //traje 1 dan
+		})
 
+		token, err := claims.SignedString([]byte(SecretKey))
+		checkError(err)
+
+		cookie := http.Cookie{
+			Name:     "jwt",
+			Value:    token,
+			Expires:  time.Now().Add(time.Hour * 24),
+			HttpOnly: true,
+		}
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		http.SetCookie(w, &cookie)
+		json.NewEncoder(w).Encode(user)
 	}
+}
+
+func GetOneUser(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := r.Cookie("jwt")
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+
+	checkError(err)
+
+	claims := token.Claims.(*jwt.StandardClaims)
+	var user models.User
+
+	issuer, _ := strconv.Atoi(claims.Issuer)
+	user = getUserForId(issuer)
+
+	json.NewEncoder(w).Encode(user)
+
 }
 
 //ova radi sa bazom
