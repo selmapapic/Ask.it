@@ -20,7 +20,7 @@ const Nav = (props) => {
 
     let menu;
 
-    if (props.name === '') {
+    if (props.name === '' || props.name === undefined) {
         menu = (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
