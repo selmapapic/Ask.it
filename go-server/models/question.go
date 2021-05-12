@@ -7,5 +7,5 @@ type Question struct {
 	Date    string
 	Like    int
 	Dislike int
-	UserId  int
+	User    User
 }

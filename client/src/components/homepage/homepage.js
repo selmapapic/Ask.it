@@ -55,6 +55,7 @@ const Homepage = (props) => {
               <li key={q.Id} className="list-group-item">
                 {q.Title} <br></br>
                 {q.Date}
+                <p>Posted by: {q.User.Name}</p>
               </li>
             )}
 

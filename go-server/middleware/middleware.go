@@ -221,6 +221,8 @@ func getAllQuestions() []models.Question {
 		var id, like, dislike, userId int
 		var title, text, date string
 		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		user := models.User{}
+		user = getUserForId(userId)
 		checkError(err)
 
 		question.Id = id
@@ -229,7 +231,7 @@ func getAllQuestions() []models.Question {
 		question.Date = date
 		question.Like = like
 		question.Dislike = dislike
-		question.UserId = userId
+		question.User = user
 		res = append(res, question)
 	}
 	return res
@@ -262,6 +264,8 @@ func mostLikedQuestions() []models.Question {
 		var title, text, date string
 		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
 		checkError(err)
+		user := models.User{}
+		user = getUserForId(userId)
 
 		question.Id = id
 		question.Title = title
@@ -269,7 +273,7 @@ func mostLikedQuestions() []models.Question {
 		question.Date = date
 		question.Like = like
 		question.Dislike = dislike
-		question.UserId = userId
+		question.User = user
 		res = append(res, question)
 	}
 	return res
@@ -347,6 +351,8 @@ func getFewAnswers() []models.Question {
 		var title, text, date string
 		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
 		checkError(err)
+		user := models.User{}
+		user = getUserForId(userId)
 
 		question.Id = id
 		question.Title = title
@@ -354,7 +360,7 @@ func getFewAnswers() []models.Question {
 		question.Date = date
 		question.Like = like
 		question.Dislike = dislike
-		question.UserId = userId
+		question.User = user
 		res = append(res, question)
 	}
 	return res
