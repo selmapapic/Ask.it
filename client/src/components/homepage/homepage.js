@@ -83,7 +83,8 @@ const Homepage = (props) => {
                   <li key={u.Id} className="list-group-item">
                     <b>{u.Title}</b> <br></br>
                     <small><i className="fa fa-thumbs-up"></i>&nbsp; {u.Like}</small><br></br>
-                    <small>Posted by: {u.User.Name} {u.User.Surname}</small>
+                    <small>Posted by: {u.User.Name} {u.User.Surname}</small> <br></br>
+                    <small>Date: {u.Date}</small> <br></br>
                   </li>
                 )}
               </ul>

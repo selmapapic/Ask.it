@@ -59,7 +59,7 @@ const Nav = (props) => {
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light">
+        <nav className="navbar navbar-expand-lg navbar-light ">
             <div className="container">
                 <ScrollUpButton AnimationDuration={100} />
                 <Link className="navbar-brand" to={"/homepage"}>Ask.it</Link>
