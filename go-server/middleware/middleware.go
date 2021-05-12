@@ -113,9 +113,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 	user = getUserByEmail(result["email"].(string))
+	fmt.Println(user, "userrrrrrrrrrrrrr")
 
 	if user.Id == 0 {
-		w.WriteHeader(403)
+		json.NewEncoder(w).Encode("No user found")
 	} else {
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(result["password"].(string)))
 		if err != nil {
@@ -145,7 +146,12 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetOneUser(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := r.Cookie("jwt")
+	cookie, err := r.Cookie("jwt")
+	if cookie == nil {
+		json.NewEncoder(w).Encode("No user logged in")
+		return
+	}
+
 	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})

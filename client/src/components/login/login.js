@@ -3,6 +3,8 @@ import '../../App.css';
 import './login.css';
 import axios from "axios";
 import { Redirect } from 'react-router';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 
 
 const Login = (props) => {
@@ -25,6 +27,11 @@ const Login = (props) => {
         ).then((res) => {
             if (res.data === "Incorrect password!") {
                 setCheckPw(false)
+            }
+            else if (res.data === "No user found") {
+                alert("No account found. Please register first!")
+                setEmail('')
+                setPassword('')
             }
             else {
                 setCheckPw(true)
@@ -58,7 +65,7 @@ const Login = (props) => {
                     <div><br></br></div>
                     <button type="submit" className="btn btn-secondary btn-block">Submit</button>
                     <p className="forgot-password text-right">
-                        Forgot <a href="#">password?</a>
+                         <Link className="nav-link" to={"/sign-up"}>No account? <b>Register</b></Link>
                     </p>
                 </form>
             </div>

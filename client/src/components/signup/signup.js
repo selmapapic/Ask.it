@@ -3,6 +3,8 @@ import '../../App.css';
 import '../login/login.css';
 import axios from "axios";
 import { Redirect } from 'react-router';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 
 const Signup = () => {
     const [name, setName] = useState('')
@@ -56,7 +58,8 @@ const Signup = () => {
                     <div><br></br></div>
                     <button type="submit" className="btn btn-secondary btn-block">Register</button>
                     <p className="forgot-password text-right">
-                        Already registered? <a href="#">Log in</a>
+                    <Link className="nav-link" to={"/log-in"}>Already registered? <b>Log in</b></Link>
+
                     </p>
                 </form>
             </div>
