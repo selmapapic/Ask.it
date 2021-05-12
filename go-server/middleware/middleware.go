@@ -321,19 +321,26 @@ func getUserByEmail(email string) models.User {
 	return user
 }
 
-func usersWithMostAnswers() []models.User {
-	query, err := database.Query("SELECT a.answerUserId FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
+func usersWithMostAnswers() []models.UserAnswers {
+	query, err := database.Query("SELECT a.answerUserId, count(a.answerUserId) FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
 
 	checkError(err)
 
-	res := []models.User{}
+	res := []models.UserAnswers{}
 
 	for query.Next() {
-		var id int
-		err = query.Scan(&id)
+		var id, answers int
+		err = query.Scan(&id, &answers)
 		checkError(err)
 		var user = getUserForId(id)
-		res = append(res, user)
+		userAnsw := models.UserAnswers{
+			Id:      user.Id,
+			Name:    user.Name,
+			Surname: user.Surname,
+			Email:   user.Email,
+			Answers: answers,
+		}
+		res = append(res, userAnsw)
 	}
 	return res
 }

@@ -53,9 +53,9 @@ const Homepage = (props) => {
           <ul className="list-group">
             {questions.map(q =>
               <li key={q.Id} className="list-group-item">
-                {q.Title} <br></br>
-                {q.Date}
-                <p>Posted by: {q.User.Name}</p>
+                <b>{q.Title}</b> <br></br>
+                <small>Posted by: {q.User.Name} {q.User.Surname}</small> <br></br>
+                <small>Date: {q.Date}</small> <br></br>
               </li>
             )}
 
@@ -69,7 +69,8 @@ const Homepage = (props) => {
               <ul className="list-group">
                 {usersMostAnswers.map(u =>
                   <li key={u.Id} className="list-group-item">
-                    {u.Name} &nbsp; {u.Surname}
+                    <b>{u.Name} {u.Surname} </b><br></br>
+                    Answers: {u.Answers}
                   </li>
                 )}
 
@@ -80,8 +81,9 @@ const Homepage = (props) => {
               <ul className="list-group">
                 {mostLikedQs.map(u =>
                   <li key={u.Id} className="list-group-item">
-                    {u.Title} <i className="fa fa-thumbs-up"></i>&nbsp;
-                    {u.Like}
+                    <b>{u.Title}</b> <br></br>
+                    <small><i className="fa fa-thumbs-up"></i>&nbsp; {u.Like}</small><br></br>
+                    <small>Posted by: {u.User.Name} {u.User.Surname}</small>
                   </li>
                 )}
               </ul>
