@@ -118,7 +118,10 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(403)
 	} else {
 		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(result["password"].(string)))
-		checkError(err)
+		if err != nil {
+			json.NewEncoder(w).Encode("Incorrect password!")
+			return
+		}
 
 		claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 			Issuer:    strconv.Itoa(user.Id),

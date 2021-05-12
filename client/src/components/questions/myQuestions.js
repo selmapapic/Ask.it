@@ -5,27 +5,15 @@ import axios from "axios";
 import AddQuestion from "./addQuestion"
 import Button from './button';
 
-const MyQuestions = () => {
+const MyQuestions = (props) => {
 
     const [questions, setQuestions] = useState([]);
     const [showForm, setShowForm] = useState(false);
-    const [name, setName] = useState('')
 
     useEffect(() => {
         const fetchData = async () => {
             const { data } = await axios.get("/api/question");
             setQuestions(data);
-        }
-        fetchData();
-        return () => {
-            //
-        }
-    }, [])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await axios.get("/api/user/one");
-            setName(data.Name)
         }
         fetchData();
         return () => {
@@ -55,7 +43,7 @@ const MyQuestions = () => {
     return (
         <div className="bodyMain">
             <h3>My Questions</h3>
-            <div>{name}</div>
+            <div>{props.name}</div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="list-group-my">
                 {

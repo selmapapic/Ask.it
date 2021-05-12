@@ -5,10 +5,11 @@ import axios from "axios";
 import { Redirect } from 'react-router';
 
 
-const Login = () => {
+const Login = (props) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [redirect, setRedirect] = useState(false)
+    const [checkPw, setCheckPw] = useState(true)
 
 
     const submit = (e) => {
@@ -21,9 +22,17 @@ const Login = () => {
                 headers:
                     { "Content-Type": "application/x-www-form-urlencoded" }
             }
-        ).then((res) => {})
+        ).then((res) => {
+            if (res.data === "Incorrect password!") {
+                setCheckPw(false)
+            }
+            else {
+                setCheckPw(true)
+                setRedirect(true)
+                props.setName(res.data.Name)
+            }
+        })
 
-        setRedirect(true)
     }
 
     if (redirect) {
@@ -38,11 +47,12 @@ const Login = () => {
 
                     <div className="form-group">
                         <label>Email address</label>
-                        <input type="email" className="form-control" placeholder="Enter email" required onChange={e => setEmail(e.target.value)}/>
+                        <input type="email" className="form-control" placeholder="Enter email" required onChange={e => setEmail(e.target.value)} />
                     </div>
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)}/>
+                        <input type="password" className="form-control" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)} />
+                        {checkPw ? <div></div> : <div style={{color: "red"}}>Incorrect password!</div> }
                     </div>
 
                     <div><br></br></div>
