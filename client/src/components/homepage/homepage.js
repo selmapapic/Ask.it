@@ -43,18 +43,6 @@ const Homepage = (props) => {
     }
   }, [])
 
- /* const [users, setUsers] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await axios.get("/api/user");
-      setUsers(data);
-    }
-    fetchData();
-    return () => {
-      //
-    }
-  }, [])*/
-
   return (
     <div className="parent">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
