@@ -58,6 +58,8 @@ const QuestionsPage = () => {
         })
     }
 
+
+
     return (
         <div className="okvir">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -72,9 +74,9 @@ const QuestionsPage = () => {
                                     <small>{q.Date}</small>
                                 </div>
                                 <p>Description: &nbsp; {q.Text}</p>
-                                <button style={{border: "none"}} onClick={addLike} className="likeBtn"><i className="fa fa-thumbs-up fa-like" id={q.Id} aria-hidden="true"></i></button> {q.Like}
+                                <button onClick={addLike} className="likeBtn"><i className="fa fa-thumbs-up fa-like" id={q.Id} aria-hidden="true"></i></button> {q.Like}
                                 &nbsp; &nbsp;
-                                <button style={{border: "none"}} onClick={addDislike} className="dislikeBtn"> <i className="fa fa-thumbs-down fa-dislike" id={q.Id}></i> </button> {q.Dislike}
+                                <button onClick={addDislike} className="dislikeBtn"> <i className="fa fa-thumbs-down fa-dislike" id={q.Id}></i> </button> {q.Dislike}
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey={q.Id}>
                                 <Card.Body>

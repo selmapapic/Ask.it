@@ -76,7 +76,7 @@ const Homepage = (props) => {
 
               </ul>
             </div>
-            <div className="col-12" className="likedQs">
+            <div className="col-12 likedQs" >
               <h3>Most liked questions</h3>
               <ul className="list-group">
                 {mostLikedQs.map(u =>
