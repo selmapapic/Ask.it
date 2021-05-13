@@ -22,6 +22,42 @@ const QuestionsPage = () => {
         }
     }, [])
 
+    const addLike = (e) => {
+        e.preventDefault()
+        const id = e.target.id
+        axios.post("/api/question/like",
+            {id},
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question");
+                setQuestions(data);
+            }
+            fetchData();
+        })
+    }
+
+    const addDislike = (e) => {
+        e.preventDefault()
+        const id = e.target.id
+        axios.post("/api/question/dislike",
+            {id},
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question");
+                setQuestions(data);
+            }
+            fetchData();
+        })
+    }
+
     return (
         <div className="okvir">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -36,8 +72,9 @@ const QuestionsPage = () => {
                                     <small>{q.Date}</small>
                                 </div>
                                 <p>Description: &nbsp; {q.Text}</p>
-                                <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                                    {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
+                                <button style={{border: "none"}} onClick={addLike} className="likeBtn"><i className="fa fa-thumbs-up fa-like" id={q.Id} aria-hidden="true"></i></button> {q.Like}
+                                &nbsp; &nbsp;
+                                <button style={{border: "none"}} onClick={addDislike} className="dislikeBtn"> <i className="fa fa-thumbs-down fa-dislike" id={q.Id}></i> </button> {q.Dislike}
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey={q.Id}>
                                 <Card.Body>

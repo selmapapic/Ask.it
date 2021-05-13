@@ -113,7 +113,6 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 	user = getUserByEmail(result["email"].(string))
-	fmt.Println(user, "userrrrrrrrrrrrrr")
 
 	if user.Id == 0 {
 		json.NewEncoder(w).Encode("No user found")
@@ -182,6 +181,30 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &cookie)
 	json.NewEncoder(w).Encode("user")
 
+}
+
+func QuestionLike(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	id := result["id"]
+	json.NewEncoder(w).Encode(id)
+	idInt, _ := strconv.Atoi(id.(string))
+	addQuestionLike(idInt)
+}
+
+func QuestionDislike(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	id := result["id"]
+
+	json.NewEncoder(w).Encode(id)
+	idInt, _ := strconv.Atoi(id.(string))
+	addQuestionDislike(idInt)
 }
 
 //ova radi sa bazom
@@ -385,4 +408,14 @@ func insertUser(user models.UserNew) {
 
 	fmt.Println("Added row with id", id)
 
+}
+
+func addQuestionLike(id int) {
+	_, err := database.Query("UPDATE question q SET q.like = q.like + 1 WHERE q.Id = " + strconv.Itoa(id))
+	checkError(err)
+}
+
+func addQuestionDislike(id int) {
+	_, err := database.Query("UPDATE question q SET q.dislike = q.dislike + 1 WHERE q.Id = " + strconv.Itoa(id))
+	checkError(err)
 }

@@ -20,6 +20,8 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/user/login", middleware.LoginUser).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/user/one", middleware.GetOneUser).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/user/logout", middleware.LogoutUser).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/question/like", middleware.QuestionLike).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/question/dislike", middleware.QuestionDislike).Methods("POST", "OPTIONS")
 
 	return router
 }

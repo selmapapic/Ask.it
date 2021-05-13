@@ -6,3 +6,20 @@
     text-align: left;
 }
 
+.likeBtn {
+    border: none;
+    background-color: whitesmoke;
+}
+
+.dislikeBtn {
+    border: none;
+    background-color: whitesmoke;
+}
+
+.fa-like:hover {
+    color: black;
+}
+
+.fa-dislike:hover {
+    color: black;
+}
