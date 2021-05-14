@@ -6,15 +6,16 @@ const Answers = () => {
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await axios.get("/api/answers/few");
-            setQuestions(data);
-        }
-        fetchData();
+
+        axios.get("/api/answers/few")
+            .then(res => {
+                setQuestions(res.data);
+            });
         return () => {
             //
         }
     }, [])
+    
     return (
         <div>
             {
@@ -27,9 +28,9 @@ const Answers = () => {
                         <p className="mb-2">{q.Text}</p>
                         <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
                             {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
-                        
+
                     </a>
-                    
+
                 )
             }
 

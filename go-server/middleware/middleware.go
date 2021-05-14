@@ -70,6 +70,7 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 
 	//posto se dobije unstructured json {"question":{"title":"a","text":"a"}} mora se pravit mapa umjesto obicnog decode >.<
 	var result map[string]interface{}
+	fmt.Println(result)
 	json.Unmarshal([]byte(reqBody), &result)
 	var id = result["id"].(float64)
 
@@ -106,6 +107,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("ev me u loginu")
 	reqBody, err := ioutil.ReadAll(r.Body)
 	checkError(err)
 	var result map[string]interface{}
@@ -147,6 +149,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("jwt")
+	fmt.Println(cookie, "ovo je cookie")
 	if cookie == nil {
 		json.NewEncoder(w).Encode("No user logged in")
 		return
@@ -167,6 +170,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 
 	issuer, _ := strconv.Atoi(claims.Issuer)
 	user = getUserForId(issuer)
+	fmt.Println(user, "user")
 	json.NewEncoder(w).Encode(user)
 }
 
@@ -209,6 +213,7 @@ func QuestionDislike(w http.ResponseWriter, r *http.Request) {
 
 func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
+	fmt.Println(id, "ovo je id")
 	idInt, _ := strconv.Atoi(id[0])
 	questions := getQuestionsForUser(idInt)
 	json.NewEncoder(w).Encode(questions)
@@ -549,7 +554,7 @@ func updateUser(user models.User) {
 	numberr, err := res.RowsAffected()
 	checkError(err)
 
-	fmt.Println(numberr, "rows affected ")
+	fmt.Println(numberr, " rows affected ")
 }
 
 func updateUserPassword(idUser int, password []byte) {
@@ -562,5 +567,5 @@ func updateUserPassword(idUser int, password []byte) {
 	numberr, err := res.RowsAffected()
 	checkError(err)
 
-	fmt.Println(numberr, "rows affected ")
+	fmt.Println(numberr, " rows affected ")
 }
