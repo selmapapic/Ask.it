@@ -236,6 +236,25 @@ func GetUserQuestionsInfo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(userQInfo)
 }
 
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	var idInt = result["id"].(float64)
+	newUser := models.User{
+		Id:       int(idInt),
+		Name:     result["name"].(string),
+		Surname:  result["surname"].(string),
+		Email:    result["email"].(string),
+		Password: "",
+	}
+	json.NewEncoder(w).Encode(newUser)
+
+	updateUser(newUser)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -497,4 +516,15 @@ func getUserQuestionsInfo(userId int) models.UserQuestionsInfo {
 		userInfo.TotalDislikes = totalDislikes
 	}
 	return userInfo
+}
+
+func updateUser(user models.User) {
+	statement, err := database.Prepare("UPDATE user set name = ?, surname = ?, email = ? WHERE id = ?")
+	checkError(err)
+
+	res, err := statement.Exec(user.Name, user.Surname, user.Email, user.Id)
+	checkError(err)
+
+	fmt.Println(res)
+
 }

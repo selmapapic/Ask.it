@@ -42,19 +42,6 @@ const MyProfile = (props) => {
         }
       }, [])
 
-    const submit = (e) => {
-        e.preventDefault()
-        axios.post("/api/user/register",
-            { name, surname, email, password },
-            {
-                headers:
-                    { "Content-Type": "application/x-www-form-urlencoded" },
-            }
-        ).then((res) => { })
-
-
-    }
-
     return (
 
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -72,7 +59,7 @@ const MyProfile = (props) => {
                 <Col sm={9}>
                     <Tab.Content>
                         <Tab.Pane eventKey="first">
-                            <ProfileInfo name={name} surname={surname} email={email} totalQs={noQ} totalLikes={noLikes} totalDislikes={noDislikes}/>
+                            <ProfileInfo id={props.id} name={name} surname={surname} email={email} totalQs={noQ} totalLikes={noLikes} totalDislikes={noDislikes}/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
                             <PasswordEdit />
