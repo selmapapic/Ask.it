@@ -611,11 +611,12 @@ func getAnswersForQuestionId(qId int) []models.Answer {
 	res := []models.Answer{}
 
 	for query.Next() {
-		var id, like, dislike, questionId int
+		var id, like, dislike, questionId, userId int
 		var text, date string
-		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId)
+		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId, &userId)
 		checkError(err)
 		question := getQuestionForId(questionId)
+		user := getUserForId(userId)
 
 		answer.Id = id
 		answer.Text = text
@@ -623,7 +624,7 @@ func getAnswersForQuestionId(qId int) []models.Answer {
 		answer.Like = like
 		answer.Dislike = dislike
 		answer.Question = question
-
+		answer.User = user
 		res = append(res, answer)
 	}
 	return res

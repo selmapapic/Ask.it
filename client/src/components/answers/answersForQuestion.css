@@ -1,0 +1,19 @@
+.qDiv {
+    margin-top: 2%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 2px;
+    padding: 2% 1% 1% 3%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.answList {
+    margin-bottom: 2%;
+    background-color: yellow;
+}
+
+.naslovh5 {
+    text-align: left;
+    margin-bottom: 3%;
+}

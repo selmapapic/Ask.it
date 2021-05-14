@@ -7,4 +7,5 @@ type Answer struct {
 	Like     int
 	Dislike  int
 	Question Question
+	User     User
 }
