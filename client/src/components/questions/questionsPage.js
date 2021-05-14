@@ -89,11 +89,7 @@ const QuestionsPage = (props) => {
                     { "Context-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => {
-            const fetchData = async () => {
-                const { data } = await axios.get("/api/question");
-                setQuestions(data);
-            }
-            fetchData();
+            window.location.reload();
         })
     }
 

@@ -299,6 +299,20 @@ func GetQuestionForId(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(question)
 }
 
+func InsertAnswer(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	fmt.Println(result, "ovo je rez")
+	var questionId = int(result["id"].(float64))
+	var userId = int(result["userId"].(float64))
+	var text = result["text"].(string)
+
+	insertAnswer(questionId, userId, text)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -639,4 +653,18 @@ func getAnswersForQuestionId(qId int) []models.Answer {
 		res = append(res, answer)
 	}
 	return res
+}
+
+func insertAnswer(questionId int, userId int, text string) {
+	fmt.Println(questionId, userId, text)
+	statement, err := database.Prepare("INSERT INTO answer (`text`, `dateTime`, `like`, `dislike`, `questionId`, `answerUserId`) VALUES (?,?,?,?,?,?);")
+	checkError(err)
+
+	res, err := statement.Exec(text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, questionId, userId)
+	checkError(err)
+
+	id, err := res.LastInsertId()
+	checkError(err)
+
+	fmt.Println("Added row with id", id)
 }
