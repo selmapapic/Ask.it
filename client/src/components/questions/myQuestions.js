@@ -6,20 +6,29 @@ import AddQuestion from "./addQuestion"
 import Button from './button';
 
 const MyQuestions = (props) => {
-
+    const [userId, setUserId] = useState(props.id)
     const [questions, setQuestions] = useState([]);
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data } = await axios.get("/api/user/questions", { params: { id: props.id } });
-            setQuestions(data);
+          const { data } = await axios.get("/api/user/one");
+          setUserId(data.Id)
         }
+
+      
         fetchData();
+        if(userId != 0) {
+            const fetchData2 = async () => {
+                const { data } = await axios.get("/api/user/questions", { params: { id: userId } });
+                setQuestions(data);
+            }
+            fetchData2()
+          }
         return () => {
-            //
+          //
         }
-    }, [])
+      }, [])
 
     const addQuestion = (question) => {
         const id = props.id
@@ -90,6 +99,7 @@ return (
                 icon={showForm ? 'fa fa-times' : 'fa fa-plus'}
                 onClick={() => setShowForm(!showForm)}
             />
+            <br></br>
             {showForm && <AddQuestion onAdd={addQuestion} />}
         </div>
     </div>

@@ -167,7 +167,6 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 
 	issuer, _ := strconv.Atoi(claims.Issuer)
 	user = getUserForId(issuer)
-	fmt.Println(user, "user")
 	json.NewEncoder(w).Encode(user)
 }
 
@@ -550,7 +549,7 @@ func updateUser(user models.User) {
 	numberr, err := res.RowsAffected()
 	checkError(err)
 
-	fmt.Println(numberr, " rows affected ")
+	fmt.Println(numberr, "rows affected ")
 }
 
 func updateUserPassword(idUser int, password []byte) {
@@ -563,5 +562,5 @@ func updateUserPassword(idUser int, password []byte) {
 	numberr, err := res.RowsAffected()
 	checkError(err)
 
-	fmt.Println(numberr, " rows affected ")
+	fmt.Println(numberr, "rows affected ")
 }
