@@ -11,6 +11,7 @@ import Homepage from "./components/homepage/homepage"
 import MyQuestions from "./components/questions/myQuestions"
 import QuestionsPage from './components/questions/questionsPage';
 import Nav from "./components/nav/nav"
+import MyProfile from "./components/profile/myProfile"
 
 function App() {
   const [name, setName] = useState('')
@@ -40,6 +41,7 @@ function App() {
           <Route path="/homepage" component={Homepage} />
           <Route path="/my-questions" component={() => <MyQuestions name={name} id={userId}/>} />
           <Route path="/questions" component={QuestionsPage} />
+          <Route path="/my-profile" component={MyProfile} />
         </Switch>
       </div>
     </div>

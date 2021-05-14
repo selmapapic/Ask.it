@@ -1,0 +1,18 @@
+.profileInfo {
+    background-color: white;
+    margin-top: 4%;
+    margin-left: 10%;
+    padding: 40px 55px 45px 55px;
+    border-radius: 10px;
+    width: 60%;
+}
+
+.labelProfile {
+    text-align: left;
+    float: left;
+}
+
+.btnSubmit {
+    float: left;
+    margin-bottom: 15%;
+}
