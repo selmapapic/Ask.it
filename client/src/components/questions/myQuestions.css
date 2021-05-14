@@ -26,3 +26,20 @@ h3 {
 .btn {
     height: 10%;
 }
+
+.xBtn {
+    color: red;
+    font-size: 25px;
+}
+
+.removeBtn:hover {
+background-color: rgb(247, 157, 157);
+}
+
+.removeBtn {
+    background-color: white;
+    border: red;
+    width: 25px;
+    height: 25px;
+    border-radius: 50px;
+}

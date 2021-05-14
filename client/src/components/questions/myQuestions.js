@@ -4,6 +4,8 @@ import './myQuestions.css';
 import axios from "axios";
 import AddQuestion from "./addQuestion"
 import Button from './button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 const MyQuestions = (props) => {
     const [userId, setUserId] = useState(props.id)
@@ -30,10 +32,10 @@ const MyQuestions = (props) => {
     }, [])
 
     //da se jednom refresha da bi se cookie obnovio
-    if(!window.location.hash) {
-		window.location = window.location + '#loaded';
-		window.location.reload();
-	}
+    if (!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
 
     const addQuestion = (question) => {
         const id = props.id
@@ -86,12 +88,12 @@ const MyQuestions = (props) => {
                         <a href="#!" key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-2 h5">{q.Title}</h5>
-                                <small>{q.Date}</small>
+                                <small>{q.Date} <button onClick={deleteQuestion} id={q.Id} className="removeBtn"> <i className="fa fa-remove xBtn"></i></button>
+                                </small>
                             </div>
                             <p className="mb-2">{q.Text}</p>
                             <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
                                 {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
-                            <button onClick={deleteQuestion} id={q.Id}>Delete</button>
                         </a>
                     )
                 }
