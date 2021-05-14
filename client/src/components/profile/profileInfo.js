@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './profileInfo.css'
 import axios from "axios";
+import swal from 'sweetalert'
 
 const ProfileInfo = (props) => {
     const [ name, setName ] = useState(props.name)
@@ -22,7 +23,10 @@ const ProfileInfo = (props) => {
                 headers:
                     { "Content-Type": "application/x-www-form-urlencoded" },
             }
-        ).then((res) => { })
+        ).then((res) => { 
+            swal("Success!", "Your user info is updated!", "success");
+
+        })
     }
 
     return (

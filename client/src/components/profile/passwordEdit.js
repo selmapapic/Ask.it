@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import swal from 'sweetalert';
+
 
 const PasswordEdit = (props) => {
     const [oldPass, setOldPass] = useState('')
@@ -15,33 +17,35 @@ const PasswordEdit = (props) => {
             alert("Passwords don't match!")
             setConfirmPass('')
         }
+        else {
+            const id = props.id
+            e.preventDefault()
+            axios.put("/api/user/update/password",
+                { id, oldPass, newPass },
+                {
+                    headers:
+                        { "Content-Type": "application/x-www-form-urlencoded" },
+                }
+            ).then((res) => {
+                if (res.data === "Incorrect password!") {
+                    setCheckPw(false)
+                }
+                else {
+                    setCheckPw(true)
+                    setOldPass('')
+                    setNewPass('')
+                    setConfirmPass('')
+                    swal("Success!", "You successfully changed your password!", "success");
 
-
-        const id = props.id
-        e.preventDefault()
-        axios.put("/api/user/update/password",
-            { id, oldPass, newPass },
-            {
-                headers:
-                    { "Content-Type": "application/x-www-form-urlencoded" },
-            }
-        ).then((res) => {
-            if (res.data === "Incorrect password!") {
-                setCheckPw(false)
-            }
-            else {
-                setCheckPw(true)
-                setOldPass('')
-                setNewPass('')
-                setConfirmPass('')
-            }
-        })
+                }
+            })
+        }
     }
 
     return (
         <form onSubmit={onSubmit}>
             <div className="form-row profileInfo">
-                <h5 style={{textAlign: "left"}} className="chngPass"><b>Change password</b></h5>
+                <h5 style={{ textAlign: "left" }} className="chngPass"><b>Change password</b></h5>
                 <br></br>
                 <div className="form-group col-md-8">
                     <label htmlFor="oldPassword" className="labelProfile">Old password</label>
