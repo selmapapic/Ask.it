@@ -215,6 +215,18 @@ func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(questions)
 }
 
+func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	id := result["id"]
+	json.NewEncoder(w).Encode(id)
+	idInt, _ := strconv.Atoi(id.(string))
+	deleteQuestion(idInt)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -453,4 +465,9 @@ func getQuestionsForUser(userId int) []models.Question {
 		res = append(res, question)
 	}
 	return res
+}
+
+func deleteQuestion(idInt int) {
+	_, err := database.Query("DELETE FROM question WHERE Id = " + strconv.Itoa(idInt))
+	checkError(err)
 }
