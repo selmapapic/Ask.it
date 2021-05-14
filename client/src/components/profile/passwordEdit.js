@@ -41,6 +41,8 @@ const PasswordEdit = (props) => {
     return (
         <form onSubmit={onSubmit}>
             <div className="form-row profileInfo">
+                <h5 style={{textAlign: "left"}} className="chngPass"><b>Change password</b></h5>
+                <br></br>
                 <div className="form-group col-md-8">
                     <label htmlFor="oldPassword" className="labelProfile">Old password</label>
                     <input type="password" className="form-control" id="oldPassword" pattern=".{5,}" title="minimum 5 characters" value={oldPass} onChange={e => setOldPass(e.target.value)} required />
