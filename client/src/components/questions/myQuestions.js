@@ -21,7 +21,7 @@ const MyQuestions = (props) => {
                 console.log(res.data.Id)
                 setUserId(res.data.Id)
             });
-
+        console.log(userId)
         if (userId !== 0 || userId !== undefined) {
             axios.get("/api/user/questions", { params: { id: userId } })
                 .then(res => {
@@ -85,11 +85,11 @@ const MyQuestions = (props) => {
         setRedirect(true)
     }
 
-    if(redirect) {
+    if (redirect) {
         return <Redirect to={{
             pathname: "/answersQ",
             state: { id: qId }
-          }} />
+        }} />
     }
 
 
@@ -109,9 +109,9 @@ const MyQuestions = (props) => {
                             </div>
                             <p className="mb-2">{q.Text}</p>
                             <div className="d-flex w-100 justify-content-between">
-                            <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                                {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
-                            <button className="viewMore" id={q.Id} onClick={setRedirectTo}>View answers</button>
+                                <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
+                                    {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
+                                <button className="viewMore" id={q.Id} onClick={setRedirectTo}>View answers</button>
                             </div>
                         </div>
                     )

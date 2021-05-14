@@ -13,7 +13,7 @@ const Nav = (props) => {
                     { "Context-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => {
-            window.location.replace("/log-in")
+            window.location.replace("/homepage")
         })
 
         props.setName('')
@@ -56,7 +56,7 @@ const Nav = (props) => {
                     <Link className="nav-link" to={"/my-profile"}>My profile</Link>
                 </li>
                 <li className="nav-item">
-                    <Link className="nav-link" to={"/log-in"} onClick={logout}>Logout</Link>
+                    <Link className="nav-link" to={"/homepage"} onClick={logout}>Logout</Link>
                 </li>
             </ul>
         )

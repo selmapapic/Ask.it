@@ -215,7 +215,9 @@ func QuestionDislike(w http.ResponseWriter, r *http.Request) {
 
 func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
-	//fmt.Println(id, "ovo je id")
+	if len(id) == 0 {
+		id = append(id, "0")
+	}
 	idInt, _ := strconv.Atoi(id[0])
 	questions := getQuestionsForUser(idInt)
 	json.NewEncoder(w).Encode(questions)
