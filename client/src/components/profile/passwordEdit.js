@@ -50,11 +50,11 @@ const PasswordEdit = (props) => {
                 </div>
                 <div className="form-group col-md-8">
                     <label htmlFor="newPassword" className="labelProfile">New password</label>
-                    <input type="password" className="form-control" id="newPassword" pattern="(?=.*[a-z]).{5,}" title="minimum 5 characters" value={newPass} onChange={e => setNewPass(e.target.value)} required />
+                    <input type="password" className="form-control" id="newPassword" pattern=".{5,}" title="minimum 5 characters" value={newPass} onChange={e => setNewPass(e.target.value)} required />
                 </div>
                 <div className="form-group col-md-8">
                     <label htmlFor="confirmPassword" className="labelProfile">Confirm new password</label>
-                    <input type="password" className="form-control" id="confirmPassword" pattern="(?=.*[a-z]).{5,}" title="minimum 5 characters" value={confirmPass} onChange={e => setConfirmPass(e.target.value)} required />
+                    <input type="password" className="form-control" id="confirmPassword" pattern=".{5,}" title="minimum 5 characters" value={confirmPass} onChange={e => setConfirmPass(e.target.value)} required />
                 </div> <br></br>
 
                 <button type="submit" className="btn btn-success col-3 btnSubmit">Submit</button>

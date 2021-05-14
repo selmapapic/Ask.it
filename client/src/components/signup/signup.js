@@ -52,10 +52,10 @@ const Signup = () => {
                     </div>
 
                     <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" className="form-control" pattern="(?=.*[a-z]).{5,}" placeholder="Enter password" title="minimum 5 characters" onChange={e => setPassword(e.target.value)} required />
+                        <label>Password *</label>
+                        <input type="password" className="form-control" pattern=".{5,}" placeholder="Enter password" title="minimum 5 characters" onChange={e => setPassword(e.target.value)} required />
                     </div>
-                    <small id="passwordHelpBlock" class="form-text text-muted" style={{ fontSize: "8pt" }}>Your password must be minimum 5 characters long, and must not contain spaces or emoji.</small>
+                    <small id="passwordHelpBlock" class="form-text text-muted" style={{ fontSize: "8pt" }}>* Your password must be minimum 5 characters long, and must not contain spaces or emoji.</small>
                     <div><br></br></div>
                     <button type="submit" className="btn btn-secondary btn-block">Register</button>
                     <p className="forgot-password text-right">

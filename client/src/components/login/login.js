@@ -58,7 +58,7 @@ const Login = (props) => {
                     </div>
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="password" className="form-control" pattern="(?=.*[a-z]).{5,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)} />
+                        <input type="password" className="form-control" pattern=".{5,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)} />
                         {checkPw ? <div></div> : <div style={{color: "red"}}>Incorrect password!</div> }
                     </div>
 
