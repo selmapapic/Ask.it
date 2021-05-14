@@ -56,16 +56,3 @@ const MyProfile = (name, surname, email, password) => {
 }
 
 export default MyProfile
-
-
-/*<form>
-            <p>Name</p>
-            <input type="text"></input> <br></br>
-            <p>Surname</p>
-            <input type="text"></input> <br></br>
-            <p>Email</p>
-            <input type="email"></input> <br></br>
-            <p>Password</p>
-            <input type="password"></input> <br></br>
-            <button type="submit">Submit</button>
-        </form>*/

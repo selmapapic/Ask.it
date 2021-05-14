@@ -26,7 +26,7 @@ const ProfileInfo = (props) => {
                     <input type="email" class="form-control" id="emailUser" aria-describedby="emailHelp" value={props.email} />
                 </div> <br></br>
 
-                <button type="submit" class="btn btn-primary btnSubmit">Submit</button>
+                <button type="submit" class="btn btn-primary col-3 btnSubmit">Submit</button>
                 <br></br>
             </div>
         </form>
