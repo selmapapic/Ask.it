@@ -27,8 +27,9 @@ const ProfileInfo = (props) => {
 
     return (
         <form onSubmit={onSubmit}>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="form-row profileInfo" >
-                <h4>Hello, <b>{props.name}</b> :)</h4>
+                <h4>Hello, <b>{props.name}</b> &#128522;</h4>
                 <br></br>
                 <p>You have asked <b>{props.totalQs}</b> questions.</p>
                 <p>Total like number: <b>{props.totalLikes}</b></p>
@@ -48,7 +49,7 @@ const ProfileInfo = (props) => {
                     <input type="email" className="form-control" id="emailUser" aria-describedby="emailHelp" defaultValue={props.email} onChange={e => setEmail(e.target.value)} required/>
                 </div> <br></br>
 
-                <button type="submit" className="btn btn-primary col-3 btnSubmit">Submit</button>
+                <button type="submit" className="btn btn-success col-4 btnSubmit">Save changes</button>
                 <br></br>
             </div>
         </form>

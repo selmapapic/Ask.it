@@ -8,14 +8,6 @@ const AddQuestion = ({onAdd}) => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        if(!title) {
-            alert("Please add question title!")
-            return
-        }
-        else if (!text) {
-            alert("Please add question description!")
-            return
-        }
 
         onAdd({ title, text })
         setTitle('')
@@ -27,11 +19,11 @@ const AddQuestion = ({onAdd}) => {
             <div className="form-parts">
                 <label>Title</label>
                 <br></br>
-                <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)}/>
+                <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} required/>
                 <br></br>
                 <label>Description</label>
                 <br></br>
-                <textarea rows="6" cols="24" value={text} onChange={e => setText(e.target.value)}></textarea>
+                <textarea rows="6" cols="24" value={text} onChange={e => setText(e.target.value)} required></textarea>
             </div>
             <br></br>
             <input type="submit" value="SaveQuestion" className="btn btn-primary"/>

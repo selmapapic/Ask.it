@@ -230,9 +230,7 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 func GetUserQuestionsInfo(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
-	fmt.Println("ev me ovdje", id, idInt)
 	userQInfo := getUserQuestionsInfo(idInt)
-	fmt.Println(userQInfo)
 	json.NewEncoder(w).Encode(userQInfo)
 }
 
@@ -253,6 +251,30 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(newUser)
 
 	updateUser(newUser)
+}
+
+func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	var idInt = int(result["id"].(float64))
+
+	user := getUserForId(idInt)
+
+	if user.Id == 0 {
+		json.NewEncoder(w).Encode("No user found")
+	} else {
+		err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(result["oldPass"].(string)))
+		if err != nil {
+			json.NewEncoder(w).Encode("Incorrect password!")
+			return
+		}
+
+		passwordNew, _ := bcrypt.GenerateFromPassword([]byte(result["newPass"].(string)), 14)
+		updateUserPassword(idInt, passwordNew)
+	}
 }
 
 //ova radi sa bazom
@@ -525,6 +547,21 @@ func updateUser(user models.User) {
 	res, err := statement.Exec(user.Name, user.Surname, user.Email, user.Id)
 	checkError(err)
 
-	fmt.Println(res)
+	numberr, err := res.RowsAffected()
+	checkError(err)
 
+	fmt.Println(numberr, " rows affected ")
+}
+
+func updateUserPassword(idUser int, password []byte) {
+	statement, err := database.Prepare("UPDATE user set password = ? WHERE id = ?")
+	checkError(err)
+
+	res, err := statement.Exec(password, idUser)
+	checkError(err)
+
+	numberr, err := res.RowsAffected()
+	checkError(err)
+
+	fmt.Println(numberr, " rows affected ")
 }

@@ -62,7 +62,7 @@ const MyProfile = (props) => {
                             <ProfileInfo id={props.id} name={name} surname={surname} email={email} totalQs={noQ} totalLikes={noLikes} totalDislikes={noDislikes}/>
                         </Tab.Pane>
                         <Tab.Pane eventKey="second">
-                            <PasswordEdit />
+                            <PasswordEdit id={props.id}/>
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>
