@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 
-const Answers = () => {
+const Answers = (props) => {
 
     const [questions, setQuestions] = useState([]);
 
     useEffect(() => {
 
-        axios.get("/api/answers/few")
+        axios.get("/api/answers/few", {params: {id: props.id}})
             .then(res => {
                 setQuestions(res.data);
             });

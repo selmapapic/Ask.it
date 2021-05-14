@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './myProfile.css';
 import axios from "axios";
-import { Row, Col,  Tab, TabContainer, Nav} from 'react-bootstrap'
+import { Row, Col,  Tab, Nav} from 'react-bootstrap'
 import ProfileInfo from './profileInfo';
 import PasswordEdit from './passwordEdit';
 
@@ -10,7 +10,6 @@ const MyProfile = (props) => {
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const [noQ, setNoQ] = useState(0)
     const [noLikes, setNoLikes] = useState(0)
     const [noDislikes, setNoDislikes] = useState(0)

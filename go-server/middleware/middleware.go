@@ -82,9 +82,11 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
+	id, _ := r.URL.Query()["id"]
+	idInt, _ := strconv.Atoi(id[0])
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	answers := getFewAnswers()
+
+	answers := getFewAnswers(idInt)
 	json.NewEncoder(w).Encode(answers)
 }
 
@@ -288,6 +290,13 @@ func GetAnswersForQuestion(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(answers)
 }
 
+func GetQuestionForId(w http.ResponseWriter, r *http.Request) {
+	id, _ := r.URL.Query()["id"]
+	idInt, _ := strconv.Atoi(id[0])
+	question := getQuestionForId(idInt)
+	json.NewEncoder(w).Encode(question)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -449,30 +458,30 @@ func usersWithMostAnswers() []models.UserAnswers {
 	return res
 }
 
-func getFewAnswers() []models.Question {
-	query, err := database.Query("SELECT * FROM question q ORDER BY q.like DESC LIMIT 3")
+func getFewAnswers(id int) []models.Answer {
+	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(id) + " ORDER BY a.like DESC LIMIT 3")
 
 	checkError(err)
 
-	question := models.Question{}
-	res := []models.Question{}
+	answer := models.Answer{}
+	res := []models.Answer{}
 
 	for query.Next() {
-		var id, like, dislike, userId int
-		var title, text, date string
-		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		var id, like, dislike, questionId, userId int
+		var text, date string
+		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId, &userId)
 		checkError(err)
-		user := models.User{}
-		user = getUserForId(userId)
+		question := getQuestionForId(questionId)
+		user := getUserForId(userId)
 
-		question.Id = id
-		question.Title = title
-		question.Text = text
-		question.Date = date
-		question.Like = like
-		question.Dislike = dislike
-		question.User = user
-		res = append(res, question)
+		answer.Id = id
+		answer.Text = text
+		answer.Date = date
+		answer.Like = like
+		answer.Dislike = dislike
+		answer.Question = question
+		answer.User = user
+		res = append(res, answer)
 	}
 	return res
 }

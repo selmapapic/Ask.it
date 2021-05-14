@@ -12,11 +12,12 @@ const AnswersForQuestion = (props) => {
     const [noAnswers, setNoAnswers] = useState(0)
 
     useEffect(() => {
+        console.log(props)
         axios.get("/api/question/answers", { params: { id: props.location.state.id } })
             .then(res => {
                 setAnswers(res.data)
 
-                if (answers.length == 0 && res.data.length != 0) {
+                if (answers.length === 0 && res.data.length !== 0) {
                     setQTitle(res.data[0].Question.Title)
                     setQText(res.data[0].Question.Text)
                     setQDate(res.data[0].Question.Date)
@@ -24,7 +25,7 @@ const AnswersForQuestion = (props) => {
                     setQDislike(res.data[0].Question.Dislike)
                     setNoAnswers(res.data.length)
                 }
-                else if (answers.length != 0) {
+                else if (answers.length !== 0) {
                     console.log("ili ovdje")
                     setQTitle(answers[0].Question.Title)
                     setQText(answers[0].Question.Text)
@@ -32,6 +33,15 @@ const AnswersForQuestion = (props) => {
                     setQLike(answers[0].Question.Like)
                     setQDislike(answers[0].Question.Dislike)
                     setNoAnswers(answers.length)
+                }
+
+                if(props.location.state.fromQsPage === true) {
+                    setQTitle(props.location.state.qForId.Title)
+                    setQText(props.location.state.qForId.Text)
+                    setQDate(props.location.state.qForId.Date)
+                    setQLike(props.location.state.qForId.Like)
+                    setQDislike(props.location.state.qForId.Dislike)
+                    //setNoAnswers(res.data.length)
                 }
             });
         return () => {
