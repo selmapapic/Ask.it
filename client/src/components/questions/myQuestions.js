@@ -12,7 +12,7 @@ const MyQuestions = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data } = await axios.get("/api/question");
+            const { data } = await axios.get("/api/user/questions", {params: {id: props.id}});
             setQuestions(data);
         }
         fetchData();
@@ -22,16 +22,16 @@ const MyQuestions = (props) => {
     }, [])
 
     const addQuestion = (question) => {
-        console.log(question);
+        const id = props.id
         axios.post("/api/question",
-            { question },
+            { question, id },
             {
                 headers:
                     { "Context-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("/api/question");
+                const { data } = await axios.get("/api/user/questions", {params: {id: props.id}});
                 setQuestions(data);
             }
             fetchData();

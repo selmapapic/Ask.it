@@ -14,11 +14,13 @@ import Nav from "./components/nav/nav"
 
 function App() {
   const [name, setName] = useState('')
+  const [userId, setUserId] = useState(0)
 
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get("/api/user/one");
       setName(data.Name)
+      setUserId(data.Id)
     }
     fetchData();
     return () => {
@@ -36,7 +38,7 @@ function App() {
           <Route path="/log-in" component={() => <Login setName={setName}/>} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/homepage" component={Homepage} />
-          <Route path="/my-questions" component={() => <MyQuestions name={name}/>} />
+          <Route path="/my-questions" component={() => <MyQuestions name={name} id={userId}/>} />
           <Route path="/questions" component={QuestionsPage} />
         </Switch>
       </div>

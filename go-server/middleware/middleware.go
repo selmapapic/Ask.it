@@ -71,12 +71,13 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 	//posto se dobije unstructured json {"question":{"title":"a","text":"a"}} mora se pravit mapa umjesto obicnog decode >.<
 	var result map[string]interface{}
 	json.Unmarshal([]byte(reqBody), &result)
-	result = result["question"].(map[string]interface{})
+	var id = result["id"].(float64)
 
+	result = result["question"].(map[string]interface{})
 	var newQ models.QuestionNew
 	newQ.Title = result["title"].(string)
 	newQ.Text = result["text"].(string)
-	insertQuestion(newQ)
+	insertQuestion(newQ, int(id))
 }
 
 func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
@@ -207,6 +208,13 @@ func QuestionDislike(w http.ResponseWriter, r *http.Request) {
 	addQuestionDislike(idInt)
 }
 
+func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
+	id, _ := r.URL.Query()["id"]
+	idInt, _ := strconv.Atoi(id[0])
+	questions := getQuestionsForUser(idInt)
+	json.NewEncoder(w).Encode(questions)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -260,11 +268,11 @@ func getAllQuestions() []models.Question {
 	return res
 }
 
-func insertQuestion(question models.QuestionNew) {
+func insertQuestion(question models.QuestionNew, idUser int) {
 	statement, err := database.Prepare("INSERT INTO question (`title`, `text`, `dateTime`, `like`, `dislike`, `userId`) VALUES (?,?,?,?,?,?);")
 	checkError(err)
 
-	res, err := statement.Exec(question.Title, question.Text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, 5)
+	res, err := statement.Exec(question.Title, question.Text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, idUser)
 	checkError(err)
 
 	id, err := res.LastInsertId()
@@ -418,4 +426,31 @@ func addQuestionLike(id int) {
 func addQuestionDislike(id int) {
 	_, err := database.Query("UPDATE question q SET q.dislike = q.dislike + 1 WHERE q.Id = " + strconv.Itoa(id))
 	checkError(err)
+}
+
+func getQuestionsForUser(userId int) []models.Question {
+	query, err := database.Query("SELECT * FROM question q WHERE q.userId = " + strconv.Itoa(userId) + " ORDER BY q.dateTime DESC")
+	checkError(err)
+
+	question := models.Question{}
+	res := []models.Question{}
+
+	for query.Next() {
+		var id, like, dislike, userId int
+		var title, text, date string
+		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		checkError(err)
+		user := models.User{}
+		user = getUserForId(userId)
+
+		question.Id = id
+		question.Title = title
+		question.Text = text
+		question.Date = date
+		question.Like = like
+		question.Dislike = dislike
+		question.User = user
+		res = append(res, question)
+	}
+	return res
 }
