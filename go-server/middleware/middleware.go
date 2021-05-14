@@ -281,6 +281,13 @@ func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func GetAnswersForQuestion(w http.ResponseWriter, r *http.Request) {
+	id, _ := r.URL.Query()["id"]
+	idInt, _ := strconv.Atoi(id[0])
+	answers := getAnswersForQuestionId(idInt)
+	json.NewEncoder(w).Encode(answers)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -568,4 +575,56 @@ func updateUserPassword(idUser int, password []byte) {
 	checkError(err)
 
 	fmt.Println(numberr, " rows affected ")
+}
+
+func getQuestionForId(id int) models.Question {
+	query, err := database.Query("SELECT * FROM question WHERE id = " + strconv.Itoa(id))
+	checkError(err)
+
+	question := models.Question{}
+
+	for query.Next() {
+		var id, like, dislike, userId int
+		var title, text, date string
+		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
+		checkError(err)
+		user := models.User{}
+		user = getUserForId(userId)
+
+		question.Id = id
+		question.Title = title
+		question.Text = text
+		question.Date = date
+		question.Like = like
+		question.Dislike = dislike
+		question.User = user
+	}
+
+	return question
+}
+
+func getAnswersForQuestionId(qId int) []models.Answer {
+	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(qId) + " ORDER BY a.like DESC")
+	checkError(err)
+
+	answer := models.Answer{}
+	res := []models.Answer{}
+
+	for query.Next() {
+		var id, like, dislike, questionId int
+		var text, date string
+		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId)
+		checkError(err)
+		question := getQuestionForId(questionId)
+
+		answer.Id = id
+		answer.Text = text
+		answer.Date = date
+		answer.Like = like
+		answer.Dislike = dislike
+		answer.Question = question
+
+		res = append(res, answer)
+	}
+	return res
 }

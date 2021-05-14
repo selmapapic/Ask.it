@@ -1,11 +1,10 @@
 package models
 
 type Answer struct {
-	id       int
-	text     string
-	date     string
-	like     int
-	dislike  int
-	question Question
-	user     User
+	Id       int
+	Text     string
+	Date     string
+	Like     int
+	Dislike  int
+	Question Question
 }
