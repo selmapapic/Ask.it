@@ -3,13 +3,13 @@ import axios from "axios";
 
 const Answers = (props) => {
 
-    const [questions, setQuestions] = useState([]);
+    const [answers, setAnswers] = useState([]);
 
     useEffect(() => {
 
         axios.get("/api/answers/few", {params: {id: props.id}})
             .then(res => {
-                setQuestions(res.data);
+                setAnswers(res.data);
             });
         return () => {
             //
@@ -19,16 +19,13 @@ const Answers = (props) => {
     return (
         <div>
             {
-                questions.map(q =>
-                    <a href="#!" key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
+                answers.map(a =>
+                    <a href="#!" key={a.Id} className="list-group-item list-group-item-action flex-column align-items-start">
+                        <p className="mb-2">{a.Text}</p>
                         <div className="d-flex w-100 justify-content-between">
-                            <h5 className="mb-2 h5">{q.Title}</h5>
-                            <small>{q.Date}</small>
+                            <small><b>Answered by:</b> {a.User.Name} {a.User.Surname}</small>
+                            <small>{a.Date}</small>
                         </div>
-                        <p className="mb-2">{q.Text}</p>
-                        <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                            {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
-
                     </a>
 
                 )

@@ -475,7 +475,7 @@ func usersWithMostAnswers() []models.UserAnswers {
 }
 
 func getFewAnswers(id int) []models.Answer {
-	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(id) + " ORDER BY a.like DESC LIMIT 3")
+	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(id) + " ORDER BY a.dateTime DESC LIMIT 3")
 
 	checkError(err)
 
@@ -629,7 +629,7 @@ func getQuestionForId(id int) models.Question {
 }
 
 func getAnswersForQuestionId(qId int) []models.Answer {
-	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(qId) + " ORDER BY a.like DESC")
+	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(qId) + " ORDER BY a.dateTime DESC")
 	checkError(err)
 
 	answer := models.Answer{}
