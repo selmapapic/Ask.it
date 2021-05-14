@@ -5,17 +5,22 @@ import "./questionsPage.css"
 import axios from "axios";
 import Answers from '../answers/answers';
 import { Link, Redirect } from 'react-router-dom';
+import AddAnswer from '../answers/addAnswer';
 
 
-const QuestionsPage = () => {
+const QuestionsPage = (props) => {
 
     const [questions, setQuestions] = useState([]);
     const [qId, setQId] = useState(0)
     const [redirect, setRedirect] = useState(false);
     const [questionForId, setQuestionForId] = useState()
-
+    const [showForm, setShowForm] = useState(false);
+    const [showButton, setShowButton] = useState(true);
 
     useEffect(() => {
+        if(props.id === undefined) {
+            setShowButton(false)
+        }
         const fetchData = async () => {
             const { data } = await axios.get("/api/question");
             setQuestions(data);
@@ -74,6 +79,24 @@ const QuestionsPage = () => {
         setRedirect(true)
     }
 
+    const addAnswer = (text, id) => {
+        const userId = props.id
+        console.log(text, id)
+        axios.post("/api/answer",
+            { text, id, userId },
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question");
+                setQuestions(data);
+            }
+            fetchData();
+        })
+    }
+
     if (redirect && questionForId !== undefined) {
         console.log(questionForId)
         return <Redirect to={{
@@ -104,11 +127,16 @@ const QuestionsPage = () => {
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey={q.Id}>
                                 <Card.Body>
-                                    <Answers id={q.Id}/>
-                                    <button className="btn btn-primary" id={q.Id} onClick={setRedirectTo}>View all</button>
+                                    <Answers id={q.Id} />
+                                    <div className="d-flex w-100 justify-content-between">
+                                        { showButton && <button className="btn btn-secondary" onClick={() => setShowForm(!showForm)}>Add answer</button> }
+                                        <button className="btn btn-secondary" id={q.Id} onClick={setRedirectTo}>View all answers</button>
+                                    </div>
+                                    <div>
+                                    {showForm && <AddAnswer id={q.Id} onAdd={ addAnswer }/>}
+                                    </div>
                                 </Card.Body>
                             </Accordion.Collapse>
-
                         </Card>
 
                     )

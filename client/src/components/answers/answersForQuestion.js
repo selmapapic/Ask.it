@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './answersForQuestion.css'
+import swal from 'sweetalert'
 
 const AnswersForQuestion = (props) => {
     const [answers, setAnswers] = useState([])
@@ -24,6 +25,9 @@ const AnswersForQuestion = (props) => {
                     setQLike(res.data[0].Question.Like)
                     setQDislike(res.data[0].Question.Dislike)
                     setNoAnswers(res.data.length)
+                    if(noAnswers === 0) {
+                        swal("There are no answers for the selected question!")
+                    }
                 }
                 else if (answers.length !== 0) {
                     console.log("ili ovdje")
@@ -33,6 +37,9 @@ const AnswersForQuestion = (props) => {
                     setQLike(answers[0].Question.Like)
                     setQDislike(answers[0].Question.Dislike)
                     setNoAnswers(answers.length)
+                    if(noAnswers === 0) {
+                        swal("There are no answers for the selected question!")
+                    }
                 }
 
                 if(props.location.state.fromQsPage === true) {
@@ -43,6 +50,7 @@ const AnswersForQuestion = (props) => {
                     setQDislike(props.location.state.qForId.Dislike)
                     //setNoAnswers(res.data.length)
                 }
+
             });
         return () => {
 

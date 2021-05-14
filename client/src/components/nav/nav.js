@@ -13,6 +13,7 @@ const Nav = (props) => {
                     { "Context-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => {
+            window.location.replace("/log-in")
         })
 
         props.setName('')
