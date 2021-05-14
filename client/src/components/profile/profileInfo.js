@@ -6,27 +6,27 @@ const ProfileInfo = (props) => {
 
         <form>
             <div className="form-row profileInfo">
-                <h4>Hello, <b>Selma</b> :)</h4>
+                <h4>Hello, <b>{props.name}</b> :)</h4>
                 <br></br>
-                <p>You have asked <b>xxx</b> questions.</p>
-                <p>Total like number: <b>123</b></p>
-                <p>Total dislike number: <b>456</b></p>
-                <hr class="solid"></hr>
+                <p>You have asked <b>{props.totalQs}</b> questions.</p>
+                <p>Total like number: <b>{props.totalLikes}</b></p>
+                <p>Total dislike number: <b>{props.totalDislikes}</b></p>
+                <hr className="solid"></hr>
 
-                <div class="form-group col-md-8">
-                    <label for="nameUser" className="labelProfile">Name</label>
-                    <input type="email" class="form-control" id="nameUser" aria-describedby="emailHelp" value={props.name} />
+                <div className="form-group col-md-8">
+                    <label htmlFor="nameUser" className="labelProfile">Name</label>
+                    <input type="email" className="form-control" id="nameUser" aria-describedby="emailHelp" defaultValue={props.name} />
                 </div>
-                <div class="form-group col-md-8">
-                    <label for="surnameUser" className="labelProfile">Surname</label>
-                    <input type="email" class="form-control" id="surnameUser" aria-describedby="emailHelp" value={props.surname} />
+                <div className="form-group col-md-8">
+                    <label htmlFor="surnameUser" className="labelProfile">Surname</label>
+                    <input type="email" className="form-control" id="surnameUser" aria-describedby="emailHelp" defaultValue={props.surname} />
                 </div>
-                <div class="form-group col-md-8">
-                    <label for="emailUser" className="labelProfile">Email address</label>
-                    <input type="email" class="form-control" id="emailUser" aria-describedby="emailHelp" value={props.email} />
+                <div className="form-group col-md-8">
+                    <label htmlFor="emailUser" className="labelProfile">Email address</label>
+                    <input type="email" className="form-control" id="emailUser" aria-describedby="emailHelp" defaultValue={props.email} />
                 </div> <br></br>
 
-                <button type="submit" class="btn btn-primary col-3 btnSubmit">Submit</button>
+                <button type="submit" className="btn btn-primary col-3 btnSubmit">Submit</button>
                 <br></br>
             </div>
         </form>

@@ -167,7 +167,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 
 	issuer, _ := strconv.Atoi(claims.Issuer)
 	user = getUserForId(issuer)
-
+	fmt.Println(user, "user")
 	json.NewEncoder(w).Encode(user)
 }
 
@@ -225,6 +225,15 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
 	deleteQuestion(idInt)
+}
+
+func GetUserQuestionsInfo(w http.ResponseWriter, r *http.Request) {
+	id, _ := r.URL.Query()["id"]
+	idInt, _ := strconv.Atoi(id[0])
+	fmt.Println("ev me ovdje", id, idInt)
+	userQInfo := getUserQuestionsInfo(idInt)
+	fmt.Println(userQInfo)
+	json.NewEncoder(w).Encode(userQInfo)
 }
 
 //ova radi sa bazom
@@ -470,4 +479,22 @@ func getQuestionsForUser(userId int) []models.Question {
 func deleteQuestion(idInt int) {
 	_, err := database.Query("DELETE FROM question WHERE Id = " + strconv.Itoa(idInt))
 	checkError(err)
+}
+
+func getUserQuestionsInfo(userId int) models.UserQuestionsInfo {
+	query, err := database.Query("SELECT count(q.id), sum(q.like), sum(q.dislike) FROM question q WHERE q.userId = " + strconv.Itoa(userId))
+	checkError(err)
+
+	userInfo := models.UserQuestionsInfo{}
+
+	for query.Next() {
+		var totalQs, totalLikes, totalDislikes int
+		err = query.Scan(&totalQs, &totalLikes, &totalDislikes)
+		checkError(err)
+
+		userInfo.TotalQuestions = totalQs
+		userInfo.TotalLikes = totalLikes
+		userInfo.TotalDislikes = totalDislikes
+	}
+	return userInfo
 }

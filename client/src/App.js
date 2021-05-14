@@ -41,7 +41,7 @@ function App() {
           <Route path="/homepage" component={Homepage} />
           <Route path="/my-questions" component={() => <MyQuestions name={name} id={userId}/>} />
           <Route path="/questions" component={QuestionsPage} />
-          <Route path="/my-profile" component={MyProfile} />
+          <Route path="/my-profile" component={() => <MyProfile name={name} id={userId}/>} />
         </Switch>
       </div>
     </div>
