@@ -4,13 +4,16 @@ import './myQuestions.css';
 import axios from "axios";
 import AddQuestion from "./addQuestion"
 import Button from './button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link, Redirect } from 'react-router-dom';
+
 
 
 const MyQuestions = (props) => {
     const [userId, setUserId] = useState(props.id)
     const [questions, setQuestions] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [redirect, setRedirect] = useState(false);
+    const [qId, setQId] = useState(0)
 
     useEffect(() => {
         axios.get("/api/user/one")
@@ -29,7 +32,7 @@ const MyQuestions = (props) => {
         return () => {
             //
         }
-    }, [])
+    }, [userId])
 
     //da se jednom refresha da bi se cookie obnovio
     if (!window.location.hash) {
@@ -76,6 +79,19 @@ const MyQuestions = (props) => {
         })
     }
 
+    const setRedirectTo = (e) => {
+        e.preventDefault()
+        setQId(e.target.id)
+        setRedirect(true)
+    }
+
+    if(redirect) {
+        return <Redirect to={{
+            pathname: "/answersQ",
+            state: { id: qId }
+          }} />
+    }
+
 
     return (
         <div className="bodyMain">
@@ -85,16 +101,19 @@ const MyQuestions = (props) => {
             <div className="list-group-my">
                 {
                     questions.map(q =>
-                        <a href="#!" key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
+                        <div key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-2 h5">{q.Title}</h5>
                                 <small>{q.Date} <button onClick={deleteQuestion} id={q.Id} className="removeBtn"> <i className="fa fa-remove xBtn"></i></button>
                                 </small>
                             </div>
                             <p className="mb-2">{q.Text}</p>
+                            <div className="d-flex w-100 justify-content-between">
                             <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
                                 {q.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {q.Dislike}</p>
-                        </a>
+                            <button className="viewMore" id={q.Id} onClick={setRedirectTo}>View answers</button>
+                            </div>
+                        </div>
                     )
                 }
 

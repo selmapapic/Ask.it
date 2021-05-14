@@ -43,3 +43,13 @@ background-color: rgb(247, 157, 157);
     height: 25px;
     border-radius: 50px;
 }
+
+.viewMore {
+    border-radius: 10px;
+    border: none;
+    height: fit-content;
+}
+
+.viewMore:hover {
+    background-color: rgb(204, 203, 203);
+}

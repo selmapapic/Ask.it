@@ -44,8 +44,6 @@ const Login = (props) => {
 
     if (redirect) {
         return <Redirect to="/my-questions" />
-        window.location.reload();
-
     }
 
     return (
