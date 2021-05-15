@@ -14,6 +14,8 @@ const MyQuestions = (props) => {
     const [showForm, setShowForm] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [qId, setQId] = useState(0)
+    const [index, setIndex] = useState(20)
+
 
     useEffect(() => {
         axios.get("/api/user/one")
@@ -92,15 +94,18 @@ const MyQuestions = (props) => {
         }} />
     }
 
+    const loadMore = (e) => {
+        e.preventDefault()
+        setIndex(index + 3)
+    }
 
     return (
         <div className="bodyMain">
             <h3>My Questions</h3>
-            <div>{props.name}</div>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="list-group-my">
                 {
-                    questions.map(q =>
+                    questions.slice(0, index).map(q =>
                         <div key={q.Id} className="list-group-item list-group-item-action flex-column align-items-start">
                             <div className="d-flex w-100 justify-content-between">
                                 <h5 className="mb-2 h5">{q.Title}</h5>
@@ -115,7 +120,9 @@ const MyQuestions = (props) => {
                             </div>
                         </div>
                     )
+
                 }
+                <button className="btn btn-secondary loadMore" onClick={loadMore}>Load More</button>
 
             </div>
             <div className="align-self-center mx-auto">

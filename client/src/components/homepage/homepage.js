@@ -100,6 +100,7 @@ const Homepage = (props) => {
           </div>
         </div>
       </div>
+      <br></br>
     </div>
   )
 }

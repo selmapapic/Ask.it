@@ -47,9 +47,7 @@ function App() {
           <Route path="/answersQ" component={(props) => <AnswersForQuestion {...props} />} />
         </Switch>
       </div>
-      <footer>
-        <p class="footer">All rights reserved</p>
-      </footer>
+     
     </div>
   </Router>
 
