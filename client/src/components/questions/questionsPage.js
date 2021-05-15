@@ -6,11 +6,13 @@ import axios from "axios";
 import Answers from '../answers/answers';
 import { Link, Redirect } from 'react-router-dom';
 import AddAnswer from '../answers/addAnswer';
+import SearchBar from "../search/search"
 
 
 const QuestionsPage = (props) => {
 
     const [questions, setQuestions] = useState([]);
+    const [dbQs, setDbQs] = useState([]);
     const [qId, setQId] = useState(0)
     const [redirect, setRedirect] = useState(false);
     const [questionForId, setQuestionForId] = useState()
@@ -18,12 +20,13 @@ const QuestionsPage = (props) => {
     const [showButton, setShowButton] = useState(true);
 
     useEffect(() => {
-        if(props.id === undefined) {
+        if (props.id === undefined) {
             setShowButton(false)
         }
         const fetchData = async () => {
             const { data } = await axios.get("/api/question");
             setQuestions(data);
+            setDbQs(data);
         }
         fetchData();
         return () => {
@@ -93,6 +96,17 @@ const QuestionsPage = (props) => {
         })
     }
 
+    const searchData = (pattern) => {
+        if (!pattern) {
+            console.log("nema nista", questions)
+            setQuestions(dbQs);
+            return;
+        }
+        const filteredItems = questions.filter((q) => q.Title.includes(pattern) || q.User.Name.includes(pattern) || q.User.Surname.includes(pattern));
+        setQuestions(filteredItems)
+        console.log(pattern)
+    }
+
     if (redirect && questionForId !== undefined) {
         console.log(questionForId)
         return <Redirect to={{
@@ -104,8 +118,15 @@ const QuestionsPage = (props) => {
 
     return (
         <div className="okvir">
+            <div className="d-flex justify-content-between srchTitle">
+                <h3 className="qs">Questions</h3>
+                <SearchBar
+                    placeholder="Search by title or user"
+                    onChange={(e) => searchData(e.target.value)}
+                />
+            </div>
+
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-            <h3 className="qs">Questions</h3>
             <Accordion className="accordion">
                 {
                     questions.map(q =>
@@ -125,11 +146,11 @@ const QuestionsPage = (props) => {
                                 <Card.Body>
                                     <Answers id={q.Id} />
                                     <div className="d-flex w-100 justify-content-between">
-                                        { showButton && <button className="btn btn-secondary" onClick={() => setShowForm(!showForm)}>Add answer</button> }
+                                        {showButton && <button className="btn btn-secondary" onClick={() => setShowForm(!showForm)}>Add answer</button>}
                                         <button className="btn btn-secondary" id={q.Id} onClick={setRedirectTo}>View all answers</button>
                                     </div>
                                     <div>
-                                    {showForm && <AddAnswer id={q.Id} onAdd={ addAnswer }/>}
+                                        {showForm && <AddAnswer id={q.Id} onAdd={addAnswer} />}
                                     </div>
                                 </Card.Body>
                             </Accordion.Collapse>

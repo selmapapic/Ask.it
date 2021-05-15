@@ -23,3 +23,9 @@
 .fa-dislike:hover {
     color: black;
 }
+
+.srchTitle {
+    width: 48%;
+    margin-right: auto;
+    margin-left: auto;
+}
