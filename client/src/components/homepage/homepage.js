@@ -8,6 +8,8 @@ import axios from "axios";
 const Homepage = (props) => {
 
   const [questions, setQuestions] = useState([]);
+  const [index, setIndex] = useState(20)
+
   useEffect(() => {
     const fetchData = async () => {
       const { data } = await axios.get("/api/question");
@@ -43,6 +45,11 @@ const Homepage = (props) => {
     }
   }, [])
 
+  const loadMore = (e) => {
+    e.preventDefault()
+    setIndex(index + 3)
+  }
+
   return (
     <div className="parent">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -51,16 +58,17 @@ const Homepage = (props) => {
         <div className="col-md">
           <h3>Newest questions</h3>
           <ul className="list-group">
-            {questions.map(q =>
+            {questions.slice(0, index).map(q =>
               <li key={q.Id} className="list-group-item">
                 <b>{q.Title}</b> <br></br>
                 <small>Posted by: {q.User.Name} {q.User.Surname}</small> <br></br>
                 <small>Date: {q.Date}</small> <br></br>
               </li>
             )}
-
-
           </ul>
+          <br></br>
+          <button className="btn btn-secondary loadMore" onClick={loadMore}>Load More</button>
+          <br></br>
         </div>
         <div className="col-md">
           <div className="row">

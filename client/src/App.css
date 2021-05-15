@@ -21,3 +21,17 @@
 .App-link {
   color: #61dafb;
 }
+
+.footer {
+  margin-top:15px;
+  text-align:center;
+  font-size:13px;
+  color:rgb(255, 255, 255);
+  margin-bottom:0;
+}
+
+footer {
+  margin-top: 2%;
+  background-color: violet;
+  height: 5%;
+}
