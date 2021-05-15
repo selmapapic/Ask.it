@@ -19,14 +19,14 @@ const MyQuestions = (props) => {
 
 
     useEffect(() => {
-        axios.get("/api/user/one")
+        axios.get("https://askit-go-server.herokuapp.com/api/user/one")
             .then(res => {
                 console.log(res.data.Id)
                 setUserId(res.data.Id)
             });
         console.log(userId)
         if (userId !== 0 || userId !== undefined) {
-            axios.get("/api/user/questions", { params: { id: userId } })
+            axios.get("https://askit-go-server.herokuapp.com/api/user/questions", { params: { id: userId } })
                 .then(res => {
                     setQuestions(res.data);
                     setDbQs(res.data);
@@ -45,7 +45,7 @@ const MyQuestions = (props) => {
 
     const addQuestion = (question) => {
         const id = props.id
-        axios.post("/api/question",
+        axios.post("https://askit-go-server.herokuapp.com/api/question",
             { question, id },
             {
                 headers:
@@ -53,7 +53,7 @@ const MyQuestions = (props) => {
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("/api/user/questions", { params: { id: props.id } });
+                const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/user/questions", { params: { id: props.id } });
                 setQuestions(data);
             }
             fetchData();
@@ -76,7 +76,7 @@ const MyQuestions = (props) => {
             denyButtonText: `Don't save`,
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete("/api/question",
+                axios.delete("https://askit-go-server.herokuapp.com/api/question",
                     {
                         data: {
                             id
@@ -86,7 +86,7 @@ const MyQuestions = (props) => {
                     }
                 ).then((res) => {
                     const fetchData = async () => {
-                        const { data } = await axios.get("/api/user/questions", { params: { id: props.id } });
+                        const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/user/questions", { params: { id: props.id } });
                         setQuestions(data);
                     }
                     fetchData();

@@ -65,6 +65,9 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 	newQ.Title = result["title"].(string)
 	newQ.Text = result["text"].(string)
 	controllers.InsertQuestion(newQ, int(id))
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode("added")
+
 }
 
 func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +93,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		Email:    result["email"].(string),
 		Password: password,
 	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(newUser)
 	controllers.InsertUser(newUser)
 }
@@ -159,6 +163,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	issuer, _ := strconv.Atoi(claims.Issuer)
 	user = controllers.GetUserForId(issuer)
 	//fmt.Println(user, "user")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(user)
 }
 
@@ -171,6 +176,7 @@ func LogoutUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, &cookie)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode("user")
 
 }
@@ -182,9 +188,11 @@ func QuestionLike(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(reqBody), &result)
 
 	id := result["id"]
-	json.NewEncoder(w).Encode(id)
+
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.AddQuestionLike(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(id)
 }
 
 func QuestionDislike(w http.ResponseWriter, r *http.Request) {
@@ -194,9 +202,10 @@ func QuestionDislike(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(reqBody), &result)
 	id := result["id"]
 
-	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.AddQuestionDislike(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(id)
 }
 
 func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
@@ -206,6 +215,7 @@ func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
 	}
 	idInt, _ := strconv.Atoi(id[0])
 	questions := controllers.GetQuestionsForUser(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(questions)
 }
 
@@ -216,15 +226,17 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(reqBody), &result)
 
 	id := result["id"]
-	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.DeleteQuestion(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(id)
 }
 
 func GetUserQuestionsInfo(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
 	userQInfo := controllers.GetUserQuestionsInfo(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(userQInfo)
 }
 
@@ -242,9 +254,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		Email:    result["email"].(string),
 		Password: "",
 	}
-	json.NewEncoder(w).Encode(newUser)
-
 	controllers.UpdateUser(newUser)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(newUser)
 }
 
 func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
@@ -269,12 +281,15 @@ func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 		passwordNew, _ := bcrypt.GenerateFromPassword([]byte(result["newPass"].(string)), 14)
 		controllers.UpdateUserPassword(idInt, passwordNew)
 	}
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode("updated")
 }
 
 func GetAnswersForQuestion(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
 	answers := controllers.GetAnswersForQuestionId(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(answers)
 }
 
@@ -282,6 +297,7 @@ func GetQuestionForId(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
 	question := controllers.GetQuestionForId(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode(question)
 }
 
@@ -296,6 +312,7 @@ func InsertAnswer(w http.ResponseWriter, r *http.Request) {
 	var text = result["text"].(string)
 
 	controllers.InsertAnswer(questionId, userId, text)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode("success")
 }
 
@@ -308,8 +325,8 @@ func DeleteAnswer(w http.ResponseWriter, r *http.Request) {
 	id := result["id"]
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.DeleteAnswer(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode("success")
-
 }
 
 func UpdateAnswer(w http.ResponseWriter, r *http.Request) {
@@ -322,8 +339,8 @@ func UpdateAnswer(w http.ResponseWriter, r *http.Request) {
 	var text = result["text"].(string)
 
 	controllers.UpdateAnswer(text, id)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	json.NewEncoder(w).Encode("success")
-
 }
 
 func AnswerLike(w http.ResponseWriter, r *http.Request) {
@@ -333,9 +350,10 @@ func AnswerLike(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(reqBody), &result)
 
 	id := result["id"]
-	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.AddAnswerLike(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(id)
 }
 
 func AnswerDislike(w http.ResponseWriter, r *http.Request) {
@@ -345,11 +363,13 @@ func AnswerDislike(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal([]byte(reqBody), &result)
 	id := result["id"]
 
-	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.AddAnswerDislike(idInt)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(id)
 }
 
 func UpAndRunning(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode("<div>Up and running!</div>")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode("Up and running!")
 }

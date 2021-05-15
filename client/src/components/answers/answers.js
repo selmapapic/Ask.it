@@ -7,14 +7,14 @@ const Answers = (props) => {
 
     useEffect(() => {
 
-        axios.get("/api/answers/few", {params: {id: props.id}})
+        axios.get("https://askit-go-server.herokuapp.com/api/answers/few", {params: {id: props.id}})
             .then(res => {
                 setAnswers(res.data);
             });
         return () => {
             //
         }
-    }, [])
+    }, )
     
     return (
         <div>

@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 )
 
@@ -45,6 +46,10 @@ func main() {
 	//za cors ako bude trebalo
 	handler := c.Handler(r)
 	//http.ListenAndServe(":8080", handler)*/
-	log.Fatal(http.ListenAndServe(":"+port, r))
+
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+	originsOk := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
+	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(headersOk, originsOk, methodsOk)(r)))
 
 }

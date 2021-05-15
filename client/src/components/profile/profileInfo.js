@@ -17,7 +17,7 @@ const ProfileInfo = (props) => {
     const onSubmit = (e) => {
         const id = props.id
         e.preventDefault()
-        axios.put("/api/user/update",
+        axios.put("https://askit-go-server.herokuapp.com/api/user/update",
             { id, name, surname, email },
             {
                 headers:

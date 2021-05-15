@@ -24,7 +24,7 @@ const QuestionsPage = (props) => {
             setShowButton(false)
         }
         const fetchData = async () => {
-            const { data } = await axios.get("/api/question");
+            const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question");
             setQuestions(data);
             setDbQs(data);
         }
@@ -37,7 +37,7 @@ const QuestionsPage = (props) => {
     const addLike = (e) => {
         e.preventDefault()
         const id = e.target.id
-        axios.post("/api/question/like",
+        axios.post("https://askit-go-server.herokuapp.com/api/question/like",
             { id },
             {
                 headers:
@@ -45,7 +45,7 @@ const QuestionsPage = (props) => {
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("/api/question");
+                const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question");
                 setQuestions(data);
             }
             fetchData();
@@ -55,7 +55,7 @@ const QuestionsPage = (props) => {
     const addDislike = (e) => {
         e.preventDefault()
         const id = e.target.id
-        axios.post("/api/question/dislike",
+        axios.post("https://askit-go-server.herokuapp.com/api/question/dislike",
             { id },
             {
                 headers:
@@ -63,7 +63,7 @@ const QuestionsPage = (props) => {
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("/api/question");
+                const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question");
                 setQuestions(data);
             }
             fetchData();
@@ -74,7 +74,7 @@ const QuestionsPage = (props) => {
 
         e.preventDefault()
         setQId(e.target.id)
-        axios.get("/api/question/id", { params: { id: e.target.id } })
+        axios.get("https://askit-go-server.herokuapp.com/api/question/id", { params: { id: e.target.id } })
             .then(res => {
                 console.log(res, "ress")
                 setQuestionForId(res.data)
@@ -85,7 +85,7 @@ const QuestionsPage = (props) => {
     const addAnswer = (text, id) => {
         const userId = props.id
         console.log(text, id)
-        axios.post("/api/answer",
+        axios.post("https://askit-go-server.herokuapp.com/api/answer",
             { text, id, userId },
             {
                 headers:

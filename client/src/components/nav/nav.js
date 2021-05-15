@@ -1,11 +1,11 @@
 import React from 'react'
 import axios from "axios";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { TinyButton as ScrollUpButton } from "react-scroll-up-button";
 
 const Nav = (props) => {
     const logout = () => {
-        axios.post("/api/user/logout",
+        axios.post("https://askit-go-server.herokuapp.com/api/user/logout",
             { withCredentials: true },
             {
                 headers:

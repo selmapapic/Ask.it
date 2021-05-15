@@ -19,7 +19,7 @@ function App() {
   const [userId, setUserId] = useState(0)
 
   useEffect(() => {
-    axios.get("/api/user/one")
+    axios.get("https://askit-go-server.herokuapp.com/api/user/one")
       .then(res => {
         setUserId(res.data.Id)
         setName(res.data.Name)

@@ -17,7 +17,7 @@ const Login = (props) => {
     const submit = (e) => {
         e.preventDefault()
         axios.defaults.withCredentials = true
-        axios.post("/api/user/login",
+        axios.post("https://askit-go-server.herokuapp.com/api/user/login",
             { email, password },
             { withCredentials: true },
             {
