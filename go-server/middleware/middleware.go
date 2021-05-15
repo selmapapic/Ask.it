@@ -349,3 +349,7 @@ func AnswerDislike(w http.ResponseWriter, r *http.Request) {
 	idInt, _ := strconv.Atoi(id.(string))
 	controllers.AddAnswerDislike(idInt)
 }
+
+func UpAndRunning(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode("<div>Up and running!</div>")
+}

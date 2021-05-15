@@ -34,6 +34,7 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/answer", middleware.UpdateAnswer).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/api/answer/like", middleware.AnswerLike).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/answer/dislike", middleware.AnswerDislike).Methods("POST", "OPTIONS")
+	router.HandleFunc("/", middleware.UpAndRunning).Methods("GET", "OPTIONS")
 
 	return router
 }
