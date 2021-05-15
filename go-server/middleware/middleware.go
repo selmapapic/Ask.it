@@ -1,10 +1,7 @@
 package middleware
 
 import (
-	"database/sql"
 	"encoding/json"
-	"fmt"
-	"go-server/config"
 	"go-server/controllers"
 	"go-server/models"
 	"io/ioutil"
@@ -18,50 +15,38 @@ import (
 
 const SecretKey = "secret"
 
-var database *sql.DB
-
-func init() {
-	createDBInstance()
-}
-
 func checkError(err error) {
 	if err != nil {
 		panic(err)
 	}
 }
 
-func createDBInstance() {
-	db, err := config.GetMySQLDb()
-	checkError(err)
-	database = db
-}
-
 //ova se exportuje
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	users := getAllUsers()
+	users := controllers.GetAllUsers()
 	json.NewEncoder(w).Encode(users)
 }
 
 func GetAllQuestions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	questions := getAllQuestions()
+	questions := controllers.GetAllQuestions()
 	json.NewEncoder(w).Encode(questions)
 }
 
 func GetUsersWithMostAnswers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	users := usersWithMostAnswers()
+	users := controllers.UsersWithMostAnswers()
 	json.NewEncoder(w).Encode(users)
 }
 
 func GetMostLikedQuestions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	questions := mostLikedQuestions()
+	questions := controllers.MostLikedQuestions()
 	json.NewEncoder(w).Encode(questions)
 }
 
@@ -79,7 +64,7 @@ func CreateQuestion(w http.ResponseWriter, r *http.Request) {
 	var newQ models.QuestionNew
 	newQ.Title = result["title"].(string)
 	newQ.Text = result["text"].(string)
-	insertQuestion(newQ, int(id))
+	controllers.InsertQuestion(newQ, int(id))
 }
 
 func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +72,7 @@ func GetFewAnswers(w http.ResponseWriter, r *http.Request) {
 	idInt, _ := strconv.Atoi(id[0])
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 
-	answers := getFewAnswers(idInt)
+	answers := controllers.GetFewAnswers(idInt)
 	json.NewEncoder(w).Encode(answers)
 }
 
@@ -106,7 +91,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		Password: password,
 	}
 	json.NewEncoder(w).Encode(newUser)
-	insertUser(newUser)
+	controllers.InsertUser(newUser)
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
@@ -118,7 +103,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	//result = result["question"].(map[string]interface{})
 
 	var user models.User
-	user = getUserByEmail(result["email"].(string))
+	user = controllers.GetUserByEmail(result["email"].(string))
 
 	if user.Id == 0 {
 		json.NewEncoder(w).Encode("No user found")
@@ -172,7 +157,7 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
 	issuer, _ := strconv.Atoi(claims.Issuer)
-	user = getUserForId(issuer)
+	user = controllers.GetUserForId(issuer)
 	//fmt.Println(user, "user")
 	json.NewEncoder(w).Encode(user)
 }
@@ -199,7 +184,7 @@ func QuestionLike(w http.ResponseWriter, r *http.Request) {
 	id := result["id"]
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
-	addQuestionLike(idInt)
+	controllers.AddQuestionLike(idInt)
 }
 
 func QuestionDislike(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +196,7 @@ func QuestionDislike(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
-	addQuestionDislike(idInt)
+	controllers.AddQuestionDislike(idInt)
 }
 
 func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
@@ -220,7 +205,7 @@ func GetUserQuestions(w http.ResponseWriter, r *http.Request) {
 		id = append(id, "0")
 	}
 	idInt, _ := strconv.Atoi(id[0])
-	questions := getQuestionsForUser(idInt)
+	questions := controllers.GetQuestionsForUser(idInt)
 	json.NewEncoder(w).Encode(questions)
 }
 
@@ -233,13 +218,13 @@ func DeleteQuestion(w http.ResponseWriter, r *http.Request) {
 	id := result["id"]
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
-	deleteQuestion(idInt)
+	controllers.DeleteQuestion(idInt)
 }
 
 func GetUserQuestionsInfo(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
-	userQInfo := getUserQuestionsInfo(idInt)
+	userQInfo := controllers.GetUserQuestionsInfo(idInt)
 	json.NewEncoder(w).Encode(userQInfo)
 }
 
@@ -259,7 +244,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(newUser)
 
-	updateUser(newUser)
+	controllers.UpdateUser(newUser)
 }
 
 func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
@@ -270,7 +255,7 @@ func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 
 	var idInt = int(result["id"].(float64))
 
-	user := getUserForId(idInt)
+	user := controllers.GetUserForId(idInt)
 
 	if user.Id == 0 {
 		json.NewEncoder(w).Encode("No user found")
@@ -282,21 +267,21 @@ func UpdateUserPassword(w http.ResponseWriter, r *http.Request) {
 		}
 
 		passwordNew, _ := bcrypt.GenerateFromPassword([]byte(result["newPass"].(string)), 14)
-		updateUserPassword(idInt, passwordNew)
+		controllers.UpdateUserPassword(idInt, passwordNew)
 	}
 }
 
 func GetAnswersForQuestion(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
-	answers := getAnswersForQuestionId(idInt)
+	answers := controllers.GetAnswersForQuestionId(idInt)
 	json.NewEncoder(w).Encode(answers)
 }
 
 func GetQuestionForId(w http.ResponseWriter, r *http.Request) {
 	id, _ := r.URL.Query()["id"]
 	idInt, _ := strconv.Atoi(id[0])
-	question := getQuestionForId(idInt)
+	question := controllers.GetQuestionForId(idInt)
 	json.NewEncoder(w).Encode(question)
 }
 
@@ -310,7 +295,7 @@ func InsertAnswer(w http.ResponseWriter, r *http.Request) {
 	var userId = int(result["userId"].(float64))
 	var text = result["text"].(string)
 
-	insertAnswer(questionId, userId, text)
+	controllers.InsertAnswer(questionId, userId, text)
 	json.NewEncoder(w).Encode("success")
 }
 
@@ -322,7 +307,7 @@ func DeleteAnswer(w http.ResponseWriter, r *http.Request) {
 
 	id := result["id"]
 	idInt, _ := strconv.Atoi(id.(string))
-	deleteAnswer(idInt)
+	controllers.DeleteAnswer(idInt)
 	json.NewEncoder(w).Encode("success")
 
 }
@@ -336,7 +321,7 @@ func UpdateAnswer(w http.ResponseWriter, r *http.Request) {
 	var id = int(result["id"].(float64))
 	var text = result["text"].(string)
 
-	updateAnswer(text, id)
+	controllers.UpdateAnswer(text, id)
 	json.NewEncoder(w).Encode("success")
 
 }
@@ -350,7 +335,7 @@ func AnswerLike(w http.ResponseWriter, r *http.Request) {
 	id := result["id"]
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
-	addAnswerLike(idInt)
+	controllers.AddAnswerLike(idInt)
 }
 
 func AnswerDislike(w http.ResponseWriter, r *http.Request) {
@@ -362,401 +347,5 @@ func AnswerDislike(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(id)
 	idInt, _ := strconv.Atoi(id.(string))
-	addAnswerDislike(idInt)
-}
-
-//ova radi sa bazom
-func getAllUsers() []models.User {
-	query, err := database.Query("SELECT * FROM user")
-
-	checkError(err)
-
-	user := models.User{}
-	res := []models.User{}
-
-	for query.Next() {
-		var id int
-		var name, surname, email, password string
-		err = query.Scan(&id, &name, &surname, &email, &password)
-		checkError(err)
-
-		user.Id = id
-		user.Name = name
-		user.Surname = surname
-		user.Email = email
-		user.Password = password
-		res = append(res, user)
-	}
-	return res
-}
-
-func getAllQuestions() []models.Question {
-	query, err := database.Query("SELECT * FROM question q ORDER BY q.dateTime DESC")
-
-	checkError(err)
-
-	question := models.Question{}
-	res := []models.Question{}
-
-	for query.Next() {
-		var id, like, dislike, userId int
-		var title, text, date string
-		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
-		user := models.User{}
-		user = getUserForId(userId)
-		checkError(err)
-
-		question.Id = id
-		question.Title = title
-		question.Text = text
-		question.Date = date
-		question.Like = like
-		question.Dislike = dislike
-		question.User = user
-		res = append(res, question)
-	}
-	return res
-}
-
-func insertQuestion(question models.QuestionNew, idUser int) {
-	statement, err := database.Prepare("INSERT INTO question (`title`, `text`, `dateTime`, `like`, `dislike`, `userId`) VALUES (?,?,?,?,?,?);")
-	checkError(err)
-
-	res, err := statement.Exec(question.Title, question.Text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, idUser)
-	checkError(err)
-
-	id, err := res.LastInsertId()
-	checkError(err)
-
-	fmt.Println("Added row with id", id)
-
-}
-
-func mostLikedQuestions() []models.Question {
-	query, err := database.Query("SELECT * FROM question q ORDER BY q.like DESC LIMIT 5")
-
-	checkError(err)
-
-	question := models.Question{}
-	res := []models.Question{}
-
-	for query.Next() {
-		var id, like, dislike, userId int
-		var title, text, date string
-		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
-		checkError(err)
-		user := models.User{}
-		user = getUserForId(userId)
-
-		question.Id = id
-		question.Title = title
-		question.Text = text
-		question.Date = date
-		question.Like = like
-		question.Dislike = dislike
-		question.User = user
-		res = append(res, question)
-	}
-	return res
-}
-
-func getUserForId(idUser int) models.User {
-	query, err := database.Query("SELECT * FROM user WHERE id = " + strconv.Itoa(idUser))
-	checkError(err)
-
-	user := models.User{}
-
-	for query.Next() {
-		var id int
-		var name, surname, email, password string
-		err = query.Scan(&id, &name, &surname, &email, &password)
-		checkError(err)
-		user.Id = id
-		user.Name = name
-		user.Surname = surname
-		user.Email = email
-		user.Password = password
-	}
-
-	return user
-}
-
-func getUserByEmail(email string) models.User {
-	query, err := database.Query("SELECT * FROM user WHERE email = '" + email + "'")
-	checkError(err)
-
-	user := models.User{}
-
-	for query.Next() {
-		var id int
-		var name, surname, email, password string
-		err = query.Scan(&id, &name, &surname, &email, &password)
-		checkError(err)
-		user.Id = id
-		user.Name = name
-		user.Surname = surname
-		user.Email = email
-		user.Password = password
-	}
-
-	return user
-}
-
-func usersWithMostAnswers() []models.UserAnswers {
-	query, err := database.Query("SELECT a.answerUserId, count(a.answerUserId) FROM answer a GROUP BY a.answerUserId ORDER BY COUNT(a.answerUserId) DESC")
-
-	checkError(err)
-
-	res := []models.UserAnswers{}
-
-	for query.Next() {
-		var id, answers int
-		err = query.Scan(&id, &answers)
-		checkError(err)
-		var user = getUserForId(id)
-		userAnsw := models.UserAnswers{
-			Id:      user.Id,
-			Name:    user.Name,
-			Surname: user.Surname,
-			Email:   user.Email,
-			Answers: answers,
-		}
-		res = append(res, userAnsw)
-	}
-	return res
-}
-
-func getFewAnswers(id int) []models.Answer {
-	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(id) + " ORDER BY a.dateTime DESC LIMIT 3")
-
-	checkError(err)
-
-	answer := models.Answer{}
-	res := []models.Answer{}
-
-	for query.Next() {
-		var id, like, dislike, questionId, userId int
-		var text, date string
-		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId, &userId)
-		checkError(err)
-		question := getQuestionForId(questionId)
-		user := getUserForId(userId)
-
-		answer.Id = id
-		answer.Text = text
-		answer.Date = date
-		answer.Like = like
-		answer.Dislike = dislike
-		answer.Question = question
-		answer.User = user
-		res = append(res, answer)
-	}
-	return res
-}
-
-func insertUser(user models.UserNew) {
-	statement, err := database.Prepare("INSERT INTO user (`name`, `surname`, `email`, `password`) VALUES (?,?,?,?);")
-	checkError(err)
-
-	res, err := statement.Exec(user.Name, user.Surname, user.Email, user.Password)
-	checkError(err)
-
-	id, err := res.LastInsertId()
-	checkError(err)
-
-	fmt.Println("Added row with id", id)
-
-}
-
-func addQuestionLike(id int) {
-	_, err := database.Query("UPDATE question q SET q.like = q.like + 1 WHERE q.Id = " + strconv.Itoa(id))
-	checkError(err)
-}
-
-func addQuestionDislike(id int) {
-	_, err := database.Query("UPDATE question q SET q.dislike = q.dislike + 1 WHERE q.Id = " + strconv.Itoa(id))
-	checkError(err)
-}
-
-func addAnswerLike(id int) {
-	_, err := database.Query("UPDATE answer a SET a.like = a.like + 1 WHERE a.Id = " + strconv.Itoa(id))
-	checkError(err)
-}
-
-func addAnswerDislike(id int) {
-	_, err := database.Query("UPDATE answer a SET a.dislike = a.dislike + 1 WHERE a.Id = " + strconv.Itoa(id))
-	checkError(err)
-}
-
-func getQuestionsForUser(userId int) []models.Question {
-	query, err := database.Query("SELECT * FROM question q WHERE q.userId = " + strconv.Itoa(userId) + " ORDER BY q.dateTime DESC")
-	checkError(err)
-
-	question := models.Question{}
-	res := []models.Question{}
-
-	for query.Next() {
-		var id, like, dislike, userId int
-		var title, text, date string
-		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
-		checkError(err)
-		user := models.User{}
-		user = getUserForId(userId)
-
-		question.Id = id
-		question.Title = title
-		question.Text = text
-		question.Date = date
-		question.Like = like
-		question.Dislike = dislike
-		question.User = user
-		res = append(res, question)
-	}
-	return res
-}
-
-func deleteQuestion(idInt int) {
-	deleteAnswersForQuestion(idInt)
-	_, err := database.Query("DELETE FROM question WHERE Id = " + strconv.Itoa(idInt))
-	checkError(err)
-}
-
-func deleteAnswersForQuestion(idQ int) {
-	_, err := database.Query("DELETE FROM answer WHERE questionId = " + strconv.Itoa(idQ))
-	checkError(err)
-}
-
-func getUserQuestionsInfo(userId int) models.UserQuestionsInfo {
-	query, err := database.Query("SELECT count(q.id), sum(q.like), sum(q.dislike) FROM question q WHERE q.userId = " + strconv.Itoa(userId))
-	checkError(err)
-
-	userInfo := models.UserQuestionsInfo{}
-
-	for query.Next() {
-		var totalQs, totalLikes, totalDislikes int
-		err = query.Scan(&totalQs, &totalLikes, &totalDislikes)
-		checkError(err)
-
-		userInfo.TotalQuestions = totalQs
-		userInfo.TotalLikes = totalLikes
-		userInfo.TotalDislikes = totalDislikes
-	}
-	return userInfo
-}
-
-func updateUser(user models.User) {
-	statement, err := database.Prepare("UPDATE user set name = ?, surname = ?, email = ? WHERE id = ?")
-	checkError(err)
-
-	res, err := statement.Exec(user.Name, user.Surname, user.Email, user.Id)
-	checkError(err)
-
-	numberr, err := res.RowsAffected()
-	checkError(err)
-
-	fmt.Println(numberr, " rows affected ")
-}
-
-func updateUserPassword(idUser int, password []byte) {
-	statement, err := database.Prepare("UPDATE user set password = ? WHERE id = ?")
-	checkError(err)
-
-	res, err := statement.Exec(password, idUser)
-	checkError(err)
-
-	numberr, err := res.RowsAffected()
-	checkError(err)
-
-	fmt.Println(numberr, " rows affected ")
-}
-
-func getQuestionForId(id int) models.Question {
-	query, err := database.Query("SELECT * FROM question WHERE id = " + strconv.Itoa(id))
-	checkError(err)
-
-	question := models.Question{}
-
-	for query.Next() {
-		var id, like, dislike, userId int
-		var title, text, date string
-		err = query.Scan(&id, &title, &text, &date, &like, &dislike, &userId)
-		checkError(err)
-		user := models.User{}
-		user = getUserForId(userId)
-
-		question.Id = id
-		question.Title = title
-		question.Text = text
-		question.Date = date
-		question.Like = like
-		question.Dislike = dislike
-		question.User = user
-	}
-
-	return question
-}
-
-func getAnswersForQuestionId(qId int) []models.Answer {
-	query, err := database.Query("SELECT * FROM answer a WHERE a.questionId = " + strconv.Itoa(qId) + " ORDER BY a.dateTime DESC")
-	checkError(err)
-
-	answer := models.Answer{}
-	res := []models.Answer{}
-
-	for query.Next() {
-		var id, like, dislike, questionId, userId int
-		var text, date string
-		err = query.Scan(&id, &text, &date, &like, &dislike, &questionId, &userId)
-		checkError(err)
-		question := getQuestionForId(questionId)
-		user := getUserForId(userId)
-
-		answer.Id = id
-		answer.Text = text
-		answer.Date = date
-		answer.Like = like
-		answer.Dislike = dislike
-		answer.Question = question
-		answer.User = user
-		res = append(res, answer)
-	}
-	return res
-}
-
-func insertAnswer(questionId int, userId int, text string) {
-	fmt.Println(questionId, userId, text)
-	statement, err := database.Prepare("INSERT INTO answer (`text`, `dateTime`, `like`, `dislike`, `questionId`, `answerUserId`) VALUES (?,?,?,?,?,?);")
-	checkError(err)
-
-	res, err := statement.Exec(text, time.Now().Format("2006-01-02 15:04:05"), 0, 0, questionId, userId)
-	checkError(err)
-
-	id, err := res.LastInsertId()
-	checkError(err)
-
-	email(questionId, userId)
-	fmt.Println("Added row with id", id)
-}
-
-func deleteAnswer(id int) {
-	_, err := database.Query("DELETE FROM answer WHERE id = " + strconv.Itoa(id))
-	checkError(err)
-}
-
-func updateAnswer(text string, id int) {
-	statement, err := database.Prepare("UPDATE answer set text = ?, dateTime = ? WHERE id = ?")
-	checkError(err)
-
-	res, err := statement.Exec(text, time.Now().Format("2006-01-02 15:04:05"), id)
-	checkError(err)
-
-	numberr, err := res.RowsAffected()
-	checkError(err)
-
-	fmt.Println(numberr, " rows affected ")
-}
-
-func email(questionId int, userId int) {
-	question := getQuestionForId(questionId)
-	controllers.SendEmail(question.User.Email, question.Title, question.User.Name)
+	controllers.AddAnswerDislike(idInt)
 }

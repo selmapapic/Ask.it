@@ -3,7 +3,6 @@ import axios from "axios";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { TinyButton as ScrollUpButton } from "react-scroll-up-button";
 
-
 const Nav = (props) => {
     const logout = () => {
         axios.post("/api/user/logout",
@@ -52,10 +51,10 @@ const Nav = (props) => {
                 <li className="nav-item">
                     <Link className="nav-link" to={"/my-questions"}>My Questions</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item right">
                     <Link className="nav-link" to={"/my-profile"}>My profile</Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item right">
                     <Link className="nav-link" to={"/homepage"} onClick={logout}>Logout</Link>
                 </li>
             </ul>
