@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"go-server/router"
 	"log"
 	"net/http"
@@ -26,7 +25,6 @@ func main() {
 		panic(er)
 	}
 	exPath := filepath.Dir(ex)
-	fmt.Println(exPath)
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
@@ -38,7 +36,7 @@ func main() {
 	port, ok := os.LookupEnv("PORT")
 
 	if !ok {
-		port = "3000"
+		port = "5000"
 	}
 
 	/**c := cors.New(cors.Options{
