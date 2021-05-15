@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-server/config"
+	"go-server/controllers"
 	"go-server/models"
 	"io/ioutil"
 	"net/http"
@@ -700,5 +701,11 @@ func insertAnswer(questionId int, userId int, text string) {
 	id, err := res.LastInsertId()
 	checkError(err)
 
+	email(questionId, userId)
 	fmt.Println("Added row with id", id)
+}
+
+func email(questionId int, userId int) {
+	question := getQuestionForId(questionId)
+	controllers.SendEmail(question.User.Email, question.Title, question.User.Name)
 }
