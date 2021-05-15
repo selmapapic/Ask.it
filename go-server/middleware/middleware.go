@@ -313,6 +313,30 @@ func InsertAnswer(w http.ResponseWriter, r *http.Request) {
 	insertAnswer(questionId, userId, text)
 }
 
+func AnswerLike(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	id := result["id"]
+	json.NewEncoder(w).Encode(id)
+	idInt, _ := strconv.Atoi(id.(string))
+	addAnswerLike(idInt)
+}
+
+func AnswerDislike(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+	id := result["id"]
+
+	json.NewEncoder(w).Encode(id)
+	idInt, _ := strconv.Atoi(id.(string))
+	addAnswerDislike(idInt)
+}
+
 //ova radi sa bazom
 func getAllUsers() []models.User {
 	query, err := database.Query("SELECT * FROM user")
@@ -523,6 +547,16 @@ func addQuestionLike(id int) {
 
 func addQuestionDislike(id int) {
 	_, err := database.Query("UPDATE question q SET q.dislike = q.dislike + 1 WHERE q.Id = " + strconv.Itoa(id))
+	checkError(err)
+}
+
+func addAnswerLike(id int) {
+	_, err := database.Query("UPDATE answer a SET a.like = a.like + 1 WHERE a.Id = " + strconv.Itoa(id))
+	checkError(err)
+}
+
+func addAnswerDislike(id int) {
+	_, err := database.Query("UPDATE answer a SET a.dislike = a.dislike + 1 WHERE a.Id = " + strconv.Itoa(id))
 	checkError(err)
 }
 

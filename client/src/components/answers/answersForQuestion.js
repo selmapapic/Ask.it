@@ -25,24 +25,23 @@ const AnswersForQuestion = (props) => {
                     setQLike(res.data[0].Question.Like)
                     setQDislike(res.data[0].Question.Dislike)
                     setNoAnswers(res.data.length)
-                    if(noAnswers === 0) {
+                    /*if(noAnswers === 0) {
                         swal("There are no answers for the selected question!")
-                    }
+                    }*/
                 }
                 else if (answers.length !== 0) {
-                    console.log("ili ovdje")
                     setQTitle(answers[0].Question.Title)
                     setQText(answers[0].Question.Text)
                     setQDate(answers[0].Question.Date)
                     setQLike(answers[0].Question.Like)
                     setQDislike(answers[0].Question.Dislike)
                     setNoAnswers(answers.length)
-                    if(noAnswers === 0) {
+                    /*if(noAnswers === 0) {
                         swal("There are no answers for the selected question!")
-                    }
+                    }*/
                 }
 
-                if(props.location.state.fromQsPage === true) {
+                if (props.location.state.fromQsPage === true) {
                     setQTitle(props.location.state.qForId.Title)
                     setQText(props.location.state.qForId.Text)
                     setQDate(props.location.state.qForId.Date)
@@ -56,6 +55,45 @@ const AnswersForQuestion = (props) => {
 
         }
     }, [props.location.state.id])
+
+    const addLike = (e) => {
+        e.preventDefault()
+        const id = e.target.id
+        console.log(id)
+        axios.post("/api/answer/like",
+            { id },
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question/answers", { params: { id: props.location.state.id } });
+                setAnswers(data);
+            }
+            fetchData();
+        })
+    }
+
+    const addDislike = (e) => {
+        e.preventDefault()
+        const id = e.target.id
+        console.log(id)
+
+        axios.post("/api/answer/dislike",
+            { id },
+            {
+                headers:
+                    { "Context-Type": "application/x-www-form-urlencoded" },
+            }
+        ).then((res) => {
+            const fetchData = async () => {
+                const { data } = await axios.get("/api/question/answers", { params: { id: props.location.state.id } });
+                setAnswers(data);
+            }
+            fetchData();
+        }) 
+    }
 
     return (
         <div>
@@ -79,12 +117,15 @@ const AnswersForQuestion = (props) => {
                             <div className="d-flex w-100 justify-content-between">
                                 <p className="mb-2">{a.Text}</p>
                             </div>
-                            <p className="mb-2"><b>Posted by:</b> {a.User.Name} {a.User.Surname}</p>
                             <div className="d-flex w-100 justify-content-between">
-                                <p><i className="fa fa-thumbs-up" aria-hidden="true"></i>
-                                    {a.Like} &nbsp; &nbsp;  <i className="fa fa-thumbs-down"></i> {a.Dislike}</p>
+                                <p className="mb-2"><b>Posted by:</b> {a.User.Name} {a.User.Surname}</p>
                                 <small>{a.Date}</small>
                             </div>
+                            <div className="alignLeft">
+                                <button onClick={addLike} className="likeBtn"><i className="fa fa-thumbs-up fa-like" id={a.Id} aria-hidden="true"></i></button> {a.Like}
+                                <button onClick={addDislike} className="dislikeBtn"> <i className="fa fa-thumbs-down fa-dislike" id={a.Id}></i> </button> {a.Dislike}
+                            </div>
+
                         </div>
                     )
                 }
