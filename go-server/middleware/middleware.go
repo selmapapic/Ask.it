@@ -589,7 +589,13 @@ func getQuestionsForUser(userId int) []models.Question {
 }
 
 func deleteQuestion(idInt int) {
+	deleteAnswersForQuestion(idInt)
 	_, err := database.Query("DELETE FROM question WHERE Id = " + strconv.Itoa(idInt))
+	checkError(err)
+}
+
+func deleteAnswersForQuestion(idQ int) {
+	_, err := database.Query("DELETE FROM answer WHERE questionId = " + strconv.Itoa(idQ))
 	checkError(err)
 }
 
