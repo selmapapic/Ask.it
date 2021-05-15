@@ -306,12 +306,39 @@ func InsertAnswer(w http.ResponseWriter, r *http.Request) {
 
 	var result map[string]interface{}
 	json.Unmarshal([]byte(reqBody), &result)
-	fmt.Println(result, "ovo je rez")
 	var questionId = int(result["id"].(float64))
 	var userId = int(result["userId"].(float64))
 	var text = result["text"].(string)
 
 	insertAnswer(questionId, userId, text)
+	json.NewEncoder(w).Encode("success")
+}
+
+func DeleteAnswer(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	id := result["id"]
+	idInt, _ := strconv.Atoi(id.(string))
+	deleteAnswer(idInt)
+	json.NewEncoder(w).Encode("success")
+
+}
+
+func UpdateAnswer(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	checkError(err)
+	var result map[string]interface{}
+	json.Unmarshal([]byte(reqBody), &result)
+
+	var id = int(result["id"].(float64))
+	var text = result["text"].(string)
+
+	updateAnswer(text, id)
+	json.NewEncoder(w).Encode("success")
+
 }
 
 func AnswerLike(w http.ResponseWriter, r *http.Request) {
@@ -709,6 +736,24 @@ func insertAnswer(questionId int, userId int, text string) {
 
 	email(questionId, userId)
 	fmt.Println("Added row with id", id)
+}
+
+func deleteAnswer(id int) {
+	_, err := database.Query("DELETE FROM answer WHERE id = " + strconv.Itoa(id))
+	checkError(err)
+}
+
+func updateAnswer(text string, id int) {
+	statement, err := database.Prepare("UPDATE answer set text = ?, dateTime = ? WHERE id = ?")
+	checkError(err)
+
+	res, err := statement.Exec(text, time.Now().Format("2006-01-02 15:04:05"), id)
+	checkError(err)
+
+	numberr, err := res.RowsAffected()
+	checkError(err)
+
+	fmt.Println(numberr, " rows affected ")
 }
 
 func email(questionId int, userId int) {

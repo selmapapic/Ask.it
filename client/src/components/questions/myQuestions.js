@@ -5,8 +5,8 @@ import axios from "axios";
 import AddQuestion from "./addQuestion"
 import Button from './button';
 import { Link, Redirect } from 'react-router-dom';
-
-
+import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 
 const MyQuestions = (props) => {
     const [userId, setUserId] = useState(props.id)
@@ -63,22 +63,41 @@ const MyQuestions = (props) => {
     const deleteQuestion = (e) => {
         e.preventDefault()
         const id = e.target.id
-        axios.delete("/api/question",
-            {
-                data: {
-                    id
-                },
-                headers:
-                    { "Context-Type": "application/x-www-form-urlencoded" }
+        const form = e.target.form; // storing the form
+        Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonText: `Save`,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete("/api/question",
+                    {
+                        data: {
+                            id
+                        },
+                        headers:
+                            { "Context-Type": "application/x-www-form-urlencoded" }
+                    }
+                ).then((res) => {
+                    const fetchData = async () => {
+                        const { data } = await axios.get("/api/user/questions", { params: { id: props.id } });
+                        setQuestions(data);
+                    }
+                    fetchData();
+                    console.log(res);
+                })
+                Swal.fire('Saved!', 'Question deleted!', 'success')
+
+            } else {
+                swal("Cancelled", "Your question is not deleted!", "error");
             }
-        ).then((res) => {
-            const fetchData = async () => {
-                const { data } = await axios.get("/api/user/questions", { params: { id: props.id } });
-                setQuestions(data);
-            }
-            fetchData();
-            console.log(res);
         })
+
     }
 
     const setRedirectTo = (e) => {

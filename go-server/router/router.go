@@ -30,6 +30,8 @@ func Router() *mux.Router {
 	router.HandleFunc("/api/question/answers", middleware.GetAnswersForQuestion).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/question/id", middleware.GetQuestionForId).Methods("GET", "OPTIONS")
 	router.HandleFunc("/api/answer", middleware.InsertAnswer).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/answer", middleware.DeleteAnswer).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/api/answer", middleware.UpdateAnswer).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/api/answer/like", middleware.AnswerLike).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/answer/dislike", middleware.AnswerDislike).Methods("POST", "OPTIONS")
 

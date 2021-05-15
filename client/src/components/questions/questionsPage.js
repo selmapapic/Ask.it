@@ -97,7 +97,7 @@ const QuestionsPage = (props) => {
         console.log(questionForId)
         return <Redirect to={{
             pathname: "/answersQ",
-            state: { id: qId, qForId: questionForId, fromQsPage: true }
+            state: { id: qId, qForId: questionForId, fromQsPage: true, loggedUser: props.id }
         }} />
     }
 
