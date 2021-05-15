@@ -3,7 +3,7 @@ import '../../App.css';
 import './login.css';
 import axios from "axios";
 import { Redirect } from 'react-router';
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 

@@ -3,7 +3,7 @@ import '../../App.css';
 import '../login/login.css';
 import axios from "axios";
 import { Redirect } from 'react-router';
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const Signup = () => {
@@ -60,7 +60,6 @@ const Signup = () => {
                     <button type="submit" className="btn btn-secondary btn-block">Register</button>
                     <p className="forgot-password text-right">
                         <Link className="nav-link" to={"/log-in"}>Already registered? <b>Log in</b></Link>
-
                     </p>
                 </form>
             </div>
