@@ -2,7 +2,6 @@
     width: 50%;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 3%;
     text-align: left;
 }
 
@@ -25,7 +24,8 @@
 }
 
 .srchTitle {
-    width: 48%;
+    width: 50%;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 2%;
 }

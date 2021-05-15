@@ -11,6 +11,7 @@ import Swal from 'sweetalert2'
 const MyQuestions = (props) => {
     const [userId, setUserId] = useState(props.id)
     const [questions, setQuestions] = useState([]);
+    const [dbQs, setDbQs] = useState([]);
     const [showForm, setShowForm] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const [qId, setQId] = useState(0)
@@ -28,7 +29,7 @@ const MyQuestions = (props) => {
             axios.get("/api/user/questions", { params: { id: userId } })
                 .then(res => {
                     setQuestions(res.data);
-
+                    setDbQs(res.data);
                 });
         }
         return () => {
@@ -118,9 +119,29 @@ const MyQuestions = (props) => {
         setIndex(index + 3)
     }
 
+    const sortBy = type => {
+        console.log(type)
+        if (type === "Date") {
+            setQuestions(dbQs)
+            return
+        }
+        else if (type === "Likes") {
+            const sorted = [...questions].sort((a, b) => b.Like - a.Like);
+            setQuestions(sorted)
+            return
+        }
+        else {
+            const sorted = [...questions].sort((a, b) => b.Dislike - a.Dislike);
+            setQuestions(sorted)
+            return
+        }
+    }
+
     return (
         <div className="bodyMain">
             <h3>My Questions</h3>
+            
+            <br></br>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
             <div className="list-group-my">
                 {
@@ -145,6 +166,15 @@ const MyQuestions = (props) => {
 
             </div>
             <div className="align-self-center mx-auto">
+            <div>
+                <label>Sort by:</label>
+                <select className="customSelect" onChange={(e) => sortBy(e.target.value)}>
+                    <option value="Date">Date</option>
+                    <option value="Likes">Likes</option>
+                    <option value="Dislikes">Dislikes</option>
+                </select>
+            </div>
+            <br></br>
                 <Button
                     color={showForm ? 'red' : 'green'}
                     text={showForm ? 'Close form' : 'Add new question'}

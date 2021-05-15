@@ -58,3 +58,14 @@ background-color: rgb(247, 157, 157);
     margin-bottom: 3%;
     width: 50%;
 }
+
+.customSelect {
+    position: relative;
+    margin-right: 20px;
+    border: none;
+    border-radius: 10px;
+    padding-left: 0.5%;
+    margin-left: 1%; 
+    height: 40px;
+    width: 8%;
+}

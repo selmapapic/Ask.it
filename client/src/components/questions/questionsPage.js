@@ -119,7 +119,7 @@ const QuestionsPage = (props) => {
     return (
         <div className="okvir">
             <div className="d-flex justify-content-between srchTitle">
-                <h3 className="qs">Questions</h3>
+                <h3 className="qs"> &nbsp; &nbsp; &nbsp; All Questions</h3>
                 <SearchBar
                     placeholder="Search by title or user"
                     onChange={(e) => searchData(e.target.value)}
