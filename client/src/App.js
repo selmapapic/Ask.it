@@ -33,6 +33,7 @@ function App() {
 
   return (<Router>
     <div className="App">
+
       <Nav name={name} setName={setName} />
 
       <div>

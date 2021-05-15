@@ -176,7 +176,7 @@ const MyQuestions = (props) => {
             </div>
             <br></br>
                 <Button
-                    color={showForm ? 'red' : 'green'}
+                    color={showForm ? '#ed2139' : '#42ba96'}
                     text={showForm ? 'Close form' : 'Add new question'}
                     icon={showForm ? 'fa fa-times' : 'fa fa-plus'}
                     onClick={() => setShowForm(!showForm)}
