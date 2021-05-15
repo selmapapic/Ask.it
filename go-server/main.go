@@ -30,7 +30,7 @@ func main() {
 		log.Fatalf("Error loading .env file")
 	}
 
-	fs := http.FileServer(http.Dir(exPath + "../client/build"))
+	fs := http.FileServer(http.Dir(exPath + "/../client/build"))
 	http.Handle("/", fs)
 
 	port, ok := os.LookupEnv("PORT")
