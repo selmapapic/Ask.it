@@ -1,7 +1,7 @@
 # Ask.it 
 
 ## Overview
-Ask.it is a web application that allows users to ask questions and give answers to other user's questions. :question: :pencil2:
+Ask.it is a full stack web application made with Go and React.js that allows users to ask questions and give answers to other user's questions. :question: :pencil2:
 
 This project is deployed to heroku: 
 > Frontend: [https://askit-go-react-app.herokuapp.com/](https://askit-go-react-app.herokuapp.com/)
