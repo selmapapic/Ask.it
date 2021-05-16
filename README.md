@@ -7,6 +7,14 @@ This project is deployed to heroku:
 > Frontend: [https://askit-go-react-app.herokuapp.com/](https://askit-go-react-app.herokuapp.com/)
 > 
 > Server: [https://askit-go-server.herokuapp.com/](https://askit-go-server.herokuapp.com/)
+> 
+
+The video below shows the app with all its features working successfully. It is run on localhost since there are some CORS errors after deployment to Heroku.
+
+
+https://user-images.githubusercontent.com/56277623/118415758-8bbd4800-b6ac-11eb-869e-8cafa3328bd8.mp4
+
+
 
 ## Features
 * Homepage (newest questions, users with most questions and most liked questions showed)
