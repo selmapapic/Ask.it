@@ -18,7 +18,7 @@ This project is deployed to heroku:
 * Edit questions and answers
 * Get email when someone's question is answered
 
-## Technologies :computer:
+## Tech :computer:
 * Go
 * React.js
 * MySQL Azure Database
