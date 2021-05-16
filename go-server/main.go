@@ -5,11 +5,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"path/filepath"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/gorilla/handlers"
-	"github.com/joho/godotenv"
+	gohandlers "github.com/gorilla/handlers"
 )
 
 func checkError(err error) {
@@ -21,18 +19,6 @@ func checkError(err error) {
 func main() {
 
 	r := router.Router()
-	ex, er := os.Executable()
-	if er != nil {
-		panic(er)
-	}
-	exPath := filepath.Dir(ex)
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	fs := http.FileServer(http.Dir(exPath + "/build"))
-	http.Handle("/", fs)
 
 	port, ok := os.LookupEnv("PORT")
 
@@ -40,16 +26,11 @@ func main() {
 		port = "5000"
 	}
 
-	/**c := cors.New(cors.Options{
-		AllowCredentials: true,
-	})
-	//za cors ako bude trebalo
-	handler := c.Handler(r)
-	//http.ListenAndServe(":8080", handler)*/
+	ch := gohandlers.CORS(
+		gohandlers.AllowedOrigins([]string{"https://askit-go-react-app.herokuapp.com"}),
+		gohandlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"}),
+		gohandlers.AllowCredentials(),
+		gohandlers.AllowedHeaders([]string{"Content-Type", "text/html; charset=utf-8", "application/json;charset=UTF-8"}))
 
-	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	originsOk := handlers.AllowedOrigins([]string{os.Getenv("ORIGIN_ALLOWED")})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
-	log.Fatal(http.ListenAndServe(":"+port, handlers.CORS(headersOk, originsOk, methodsOk)(r)))
-
+	log.Fatal(http.ListenAndServe(":"+port, ch(r)))
 }

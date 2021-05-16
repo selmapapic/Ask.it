@@ -135,3 +135,30 @@ func UpdateUserPassword(idUser int, password []byte) {
 
 	fmt.Println(numberr, " rows affected ")
 }
+
+func GetJwt() string {
+	query, err := Database.Query("SELECT j.jwtVal FROM jwt j ORDER BY j.id DESC LIMIT 1")
+	checkError(err)
+
+	var value string
+
+	for query.Next() {
+		err = query.Scan(&value)
+		checkError(err)
+	}
+
+	return value
+}
+
+func AddJwt(token string) {
+	statement, err := Database.Prepare("INSERT INTO jwt (`jwtVal`) VALUES (?);")
+	checkError(err)
+
+	res, err := statement.Exec(token)
+	checkError(err)
+
+	id, err := res.LastInsertId()
+	checkError(err)
+
+	fmt.Println("Added row with id", id)
+}

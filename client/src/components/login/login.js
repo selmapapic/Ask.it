@@ -22,7 +22,11 @@ const Login = (props) => {
             { withCredentials: true },
             {
                 headers:
-                    { "Content-Type": "application/x-www-form-urlencoded" }
+                {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Origin" : "*"
+                }
             }
         ).then((res) => {
             if (res.data === "Incorrect password!") {
@@ -59,13 +63,13 @@ const Login = (props) => {
                     <div className="form-group">
                         <label>Password</label>
                         <input type="password" className="form-control" pattern=".{5,}" placeholder="Enter password" required onChange={e => setPassword(e.target.value)} />
-                        {checkPw ? <div></div> : <div style={{color: "red"}}>Incorrect password!</div> }
+                        {checkPw ? <div></div> : <div style={{ color: "red" }}>Incorrect password!</div>}
                     </div>
 
                     <div><br></br></div>
                     <button type="submit" className="btn btn-secondary btn-block">Submit</button>
                     <p className="forgot-password text-right">
-                         <Link className="nav-link" to={"/sign-up"}>No account? <b>Register</b></Link>
+                        <Link className="nav-link" to={"/sign-up"}>No account? <b>Register</b></Link>
                     </p>
                 </form>
             </div>
