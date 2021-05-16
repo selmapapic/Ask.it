@@ -31,10 +31,13 @@ func GetAllUsers() []models.User {
 }
 
 func GetUserForId(idUser int) models.User {
+	user := models.User{}
+	if idUser == 0 {
+		user.Id = 0
+		return user
+	}
 	query, err := Database.Query("SELECT * FROM user WHERE id = " + strconv.Itoa(idUser))
 	checkError(err)
-
-	user := models.User{}
 
 	for query.Next() {
 		var id int

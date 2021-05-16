@@ -30,7 +30,7 @@ func main() {
 		gohandlers.AllowedOrigins([]string{"https://askit-go-react-app.herokuapp.com"}),
 		gohandlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"}),
 		gohandlers.AllowCredentials(),
-		gohandlers.AllowedHeaders([]string{"Content-Type", "text/html; charset=utf-8", "application/json;charset=UTF-8"}))
+		gohandlers.AllowedHeaders([]string{"Content-Type", "text/html; charset=utf-8", "application/json;charset=UTF-8", "text/plain"}))
 
 	log.Fatal(http.ListenAndServe(":"+port, ch(r)))
 }

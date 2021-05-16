@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"encoding/json"
+	"fmt"
 	"go-server/controllers"
 	"go-server/models"
 	"io/ioutil"
@@ -113,6 +114,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w, r)
 	//fmt.Println("ev me u loginu")
 	reqBody, err := ioutil.ReadAll(r.Body)
 	checkError(err)
@@ -140,23 +142,19 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		token, err := claims.SignedString([]byte(SecretKey))
 		checkError(err)
 
-		cookie := http.Cookie{
-			Name:    "jwt",
-			Value:   token,
-			Expires: time.Now().Add(time.Hour * 24),
-			Path:    "/",
-		}
-		http.SetCookie(w, &cookie)
-		controllers.AddJwt(token)
 		w.Header().Set("Access-Control-Allow-Origin", "https://askit-go-react-app.herokuapp.com")
-		w.Header().Set("Set-Cookie", cookie.String())
 		setupResponse(&w, r)
-		json.NewEncoder(w).Encode(user)
+		json.NewEncoder(w).Encode(token)
+		controllers.AddJwt(token)
 	}
 }
 
 func GetOneUser(w http.ResponseWriter, r *http.Request) {
 	var value = controllers.GetJwt()
+	if value == "0" {
+		json.NewEncoder(w).Encode("unauth")
+		return
+	}
 	//fmt.Println(cookie, "ovo je cookie")
 
 	token, err := jwt.ParseWithClaims(value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -181,18 +179,20 @@ func GetOneUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutUser(w http.ResponseWriter, r *http.Request) {
-	cookie := http.Cookie{
-		Name:     "jwt",
-		Value:    "",
-		Expires:  time.Now().Add(-time.Hour), //expired one hour ago i tako se remove-a
-		HttpOnly: true,
-	}
-
-	http.SetCookie(w, &cookie)
-	w.Header().Set("Access-Control-Allow-Origin", "https://askit-go-react-app.herokuapp.com")
 	setupResponse(&w, r)
-	json.NewEncoder(w).Encode("user")
+	if r.Method == "OPTIONS" {
+		fmt.Println("bla bla")
+		w.Header().Set("Access-Control-Allow-Origin", "https://askit-go-react-app.herokuapp.com")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, DELETE, PUT")
+		w.Header().Set("Access-Control-Allow-Headers", "content-type")
+		fmt.Println(w, "ovo je w")
+	} else {
+		controllers.AddJwt("0")
 
+		w.Header().Set("Access-Control-Allow-Origin", "https://askit-go-react-app.herokuapp.com")
+		setupResponse(&w, r)
+		json.NewEncoder(w).Encode("user")
+	}
 }
 
 func QuestionLike(w http.ResponseWriter, r *http.Request) {

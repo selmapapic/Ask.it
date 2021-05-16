@@ -19,7 +19,6 @@ const AnswersForQuestion = (props) => {
 
 
     useEffect(() => {
-        console.log(props)
         axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } })
             .then(res => {
                 setAnswers(res.data)
