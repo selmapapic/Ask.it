@@ -1,12 +1,12 @@
-# Ask.it 
+![logo2](https://user-images.githubusercontent.com/56277623/118417516-aeebf580-b6b4-11eb-9b3c-a79dfa12a2ef.jpg)
 
 ## Overview
 Ask.it is a full stack web application made with Go and React.js that allows users to ask questions and give answers to other user's questions. :question: 
 
-This project is deployed to heroku: 
+This project is deployed to Heroku: 
 > Frontend: [https://askit-go-react-app.herokuapp.com/](https://askit-go-react-app.herokuapp.com/)
 > 
-> Server: [https://askit-go-server.herokuapp.com/](https://askit-go-server.herokuapp.com/)
+> Backend Server: [https://askit-go-server.herokuapp.com/](https://askit-go-server.herokuapp.com/)
 > 
 
 The video below shows the app with all its features working successfully. It is run on localhost since there are some CORS errors after deployment to Heroku.
