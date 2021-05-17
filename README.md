@@ -17,8 +17,8 @@ https://user-images.githubusercontent.com/56277623/118415758-8bbd4800-b6ac-11eb-
 
 
 ## Features
-* Homepage (newest questions, users with most questions and most liked questions showed)
-* User registration (JWT used)
+* Homepage (newest questions, users with most questions and most liked questions displayed)
+* User registration (JWT + cookies used, user passwords hashed using [bcrypt](https://pkg.go.dev/golang.org/x/crypto/bcrypt) package)
 * Edit profile
 * Ask questions, add answers
 * Like/dislike questions and answers
@@ -30,5 +30,5 @@ https://user-images.githubusercontent.com/56277623/118415758-8bbd4800-b6ac-11eb-
 * Go
 * React.js
 * MySQL Azure Database
-* JSON Web Token
+* JSON Web Token - [jwt-go](https://github.com/dgrijalva/jwt-go)
 * Bootstrap
