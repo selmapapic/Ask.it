@@ -16,7 +16,7 @@ const MyProfile = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-          const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/user/one");
+          const { data } = await axios.get("/api/user/one");
           setName(data.Name)
           setSurname(data.Surname)
           setEmail(data.Email)
@@ -29,7 +29,7 @@ const MyProfile = (props) => {
 
       useEffect(() => {
         const fetchData = async () => {
-          const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/user/one/info", { params: { id: props.id } })
+          const { data } = await axios.get("/api/user/one/info", { params: { id: props.id } })
           setNoQ(data.TotalQuestions)
           setNoLikes(data.TotalLikes)
           setNoDislikes(data.TotalDislikes)

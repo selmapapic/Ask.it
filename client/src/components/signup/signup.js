@@ -15,7 +15,7 @@ const Signup = () => {
 
     const submit = (e) => {
         e.preventDefault()
-        axios.post("https://askit-go-server.herokuapp.com/api/user/register",
+        axios.post("/api/user/register",
             { name, surname, email, password },
             {
                 headers:

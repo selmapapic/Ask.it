@@ -20,7 +20,7 @@ const PasswordEdit = (props) => {
         else {
             const id = props.id
             e.preventDefault()
-            axios.put("https://askit-go-server.herokuapp.com/api/user/update/password",
+            axios.put("/api/user/update/password",
                 { id, oldPass, newPass },
                 {
                     headers:

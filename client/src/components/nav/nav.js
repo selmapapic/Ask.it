@@ -5,7 +5,7 @@ import { TinyButton as ScrollUpButton } from "react-scroll-up-button";
 
 const Nav = (props) => {
     const logout = () => {
-        axios.post("https://askit-go-server.herokuapp.com/api/user/logout",
+        axios.post("/api/user/logout",
             { withCredentials: true },
             {
                 headers:

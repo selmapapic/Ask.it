@@ -12,7 +12,7 @@ const Homepage = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question");
+      const { data } = await axios.get("/api/question");
       setQuestions(data);
     }
     fetchData();
@@ -24,7 +24,7 @@ const Homepage = (props) => {
   const [usersMostAnswers, setUsersMostAnswers] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/user/mostAnswers");
+      const { data } = await axios.get("/api/user/mostAnswers");
       setUsersMostAnswers(data);
     }
     fetchData();
@@ -36,7 +36,7 @@ const Homepage = (props) => {
   const [mostLikedQs, setMostLikedQs] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/mostLiked");
+      const { data } = await axios.get("/api/mostLiked");
       setMostLikedQs(data);
     }
     fetchData();

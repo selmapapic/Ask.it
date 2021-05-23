@@ -19,7 +19,7 @@ const AnswersForQuestion = (props) => {
 
 
     useEffect(() => {
-        axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } })
+        axios.get("/api/question/answers", { params: { id: props.location.state.id } })
             .then(res => {
                 setAnswers(res.data)
 
@@ -58,7 +58,7 @@ const AnswersForQuestion = (props) => {
         e.preventDefault()
         const id = e.target.id
         console.log(id)
-        axios.post("https://askit-go-server.herokuapp.com/api/answer/like",
+        axios.post("/api/answer/like",
             { id },
             {
                 headers:
@@ -66,7 +66,7 @@ const AnswersForQuestion = (props) => {
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } });
+                const { data } = await axios.get("/api/question/answers", { params: { id: props.location.state.id } });
                 setAnswers(data);
             }
             fetchData();
@@ -78,7 +78,7 @@ const AnswersForQuestion = (props) => {
         const id = e.target.id
         console.log(id)
 
-        axios.post("https://askit-go-server.herokuapp.com/api/answer/dislike",
+        axios.post("/api/answer/dislike",
             { id },
             {
                 headers:
@@ -86,7 +86,7 @@ const AnswersForQuestion = (props) => {
             }
         ).then((res) => {
             const fetchData = async () => {
-                const { data } = await axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } });
+                const { data } = await axios.get("/api/question/answers", { params: { id: props.location.state.id } });
                 setAnswers(data);
             }
             fetchData();
@@ -114,7 +114,7 @@ const AnswersForQuestion = (props) => {
             denyButtonText: `Don't save`,
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete("https://askit-go-server.herokuapp.com/api/answer",
+                axios.delete("/api/answer",
                     {
                         data: {
                             id
@@ -123,7 +123,7 @@ const AnswersForQuestion = (props) => {
                             { "Context-Type": "application/x-www-form-urlencoded" }
                     }
                 ).then((res) => {
-                    axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } })
+                    axios.get("/api/question/answers", { params: { id: props.location.state.id } })
                     .then(res => {
                         setAnswers(res.data)
                     })      
@@ -138,14 +138,14 @@ const AnswersForQuestion = (props) => {
 
     const editAnswer = (text, id) => {
         console.log(text, id)
-        axios.put("https://askit-go-server.herokuapp.com/api/answer",
+        axios.put("/api/answer",
             { id, text },
             {
                 headers:
                     { "Content-Type": "application/x-www-form-urlencoded" },
             }
         ).then((res) => { 
-            axios.get("https://askit-go-server.herokuapp.com/api/question/answers", { params: { id: props.location.state.id } })
+            axios.get("/api/question/answers", { params: { id: props.location.state.id } })
             .then(res => {
                 setAnswers(res.data)
             });
