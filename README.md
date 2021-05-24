@@ -15,6 +15,24 @@ The video below shows the app with all its features working successfully. It is 
 https://user-images.githubusercontent.com/56277623/118415758-8bbd4800-b6ac-11eb-869e-8cafa3328bd8.mp4
 
 
+## Run on localhost
+To run the application locally you should:
+1. Clone/download the project to Visual Studio Code
+2. Checkout to branch *localhostVersion*
+````
+git checkout localhostVersion
+````
+3. Run *go-server* from terminal by
+````
+cd go-server
+go run .
+````
+4. Create a new terminal and run frontend by
+````
+cd client
+npm run start
+````
+- This way the application can be run without any CORS errors that are present when using Heroku deployment links. 
 
 ## Features
 * Homepage (newest questions, users with most questions and most liked questions displayed)
