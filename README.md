@@ -47,6 +47,6 @@ npm run start
 ## Tech :computer:
 * Go
 * React.js
-* MySQL Azure Database
+* MySQL Database
 * JSON Web Token - [jwt-go](https://github.com/dgrijalva/jwt-go)
 * Bootstrap
